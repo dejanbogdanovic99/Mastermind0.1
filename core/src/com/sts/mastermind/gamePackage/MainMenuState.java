@@ -55,6 +55,7 @@ public class MainMenuState extends GameState {
     @Override
     public void init() {
         initTextures();
+
     }
 
     @Override
@@ -87,7 +88,6 @@ public class MainMenuState extends GameState {
         }
         if(exit.handleUp(x,y)){
             if(listener != null){
-
             }
         }
     }

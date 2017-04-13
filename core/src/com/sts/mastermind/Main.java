@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.gamePackage.GameState;
+import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.listeners.ChangeState;
 
 public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
@@ -19,6 +20,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int SETTINGS_STATE = 1;
+	public static final int PLAY_STATE = 2;
 
 
 	/**
@@ -28,14 +30,14 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	private final int STANDARD_WIDTH = 1080;
 	private final int STANDARD_HEIGHT = 1920;
 
-	private final int AMOUNT_OF_STATES = 6;
+	private final int AMOUNT_OF_STATES = 5;
 
 	private final float R_BG = 0.886f;
 	private final float G_BG = 0.886f;
 	private final float B_BG = 0.886f;
 
 
-	private final float alphaRatiio = 0.00005f;
+	private final float alphaRatio = 0.00005f;
 	/**
 	 za pozadinsku animaciju
 	 */
@@ -113,6 +115,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		stateOfGame = new GameState[AMOUNT_OF_STATES];
 
+		stateOfGame[MAIN_MENU_STATE] = new MainMenuState(bundle, scaleX, scaleY, width, height);
+
 		initTextures();
 
 		Gdx.input.setInputProcessor(this);
@@ -128,7 +132,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		float delta = Gdx.graphics.getDeltaTime();
 
 		if(nextState != currentState && alpha > 0){
-			alpha -= delta*alphaRatiio;
+			alpha -= delta*alphaRatio;
 			if(alpha < 0){
 				alpha = 0;
 				final int oldState = currentState;
@@ -143,7 +147,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		}
 
 		if(nextState == currentState && alpha < 1){
-			alpha -= delta*alphaRatiio;
+			alpha += delta*alphaRatio;
 			if(alpha > 1){
 				alpha = 1f;
 			}
