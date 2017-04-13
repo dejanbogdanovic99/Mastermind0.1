@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
@@ -86,6 +87,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	 scale slika
 	 */
 
+	private BitmapFont font;
+
 	private float scaleX;
 	private float scaleY;
 
@@ -118,6 +121,13 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[MAIN_MENU_STATE] = new MainMenuState(bundle, scaleX, scaleY, width, height);
 
 		initTextures();
+
+		lineImage = new Image(lineTexture);
+		lineImage.setScale(scaleX, scaleY);
+		lineImage.setX(0);
+		lineImage.setY(-scaleY*lineImage.getHeight());
+
+		font = new BitmapFont();
 
 		Gdx.input.setInputProcessor(this);
 
@@ -153,9 +163,19 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			}
 		}
 
+		lineImage.moveBy(0, 1.5f);
+
+		if(lineImage.getY() > height){
+			lineImage.setY(-lineImage.getHeight());
+		}
+
 		//stateOfGame[currentState].update(delta);
 
 		batch.begin();
+
+		lineImage.draw(batch, 1);
+
+		font.draw(batch, Float.toString(delta), 100, 100);
 
 		//stateOfGame[currentState].render(batch, alpha);
 
@@ -169,7 +189,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	}
 
 	private void initTextures(){
-		lineTexture = new Texture("yellow.png");
+		lineTexture = new Texture("line.png");
 	}
 
 	private void disposeTextures(){
