@@ -12,11 +12,8 @@ public class MainMenuState extends GameState {
         Sve texutre za meni
 
      */
-    private Texture playSignsUp;
-    private Texture playSignsDown;
-
-    private Texture playColorsUp;
-    private Texture playColorsDown;
+    private Texture playUp;
+    private Texture playDown;
 
     private Texture settingsUp;
     private Texture settingsDown;
@@ -30,9 +27,7 @@ public class MainMenuState extends GameState {
         svi tasteri u meniju
      */
 
-    private Button playSigns;
-
-    private Button playColors;
+    private Button play;
 
     private Button settings;
 
@@ -64,26 +59,21 @@ public class MainMenuState extends GameState {
     @Override
     public void render(SpriteBatch batch, float alpha) {
         logoImage.draw(batch, alpha);
-        playSigns.draw(batch, alpha);
-        playColors.draw(batch, alpha);
+        play.draw(batch, alpha);
         settings.draw(batch, alpha);
         exit.draw(batch, alpha);
     }
 
     @Override
     public void touchDown(int x, int y) {
-        playSigns.handleDown(x,y);
-        playColors.handleDown(x,y);
+        play.handleDown(x,y);
         settings.handleDown(x,y);
         exit.handleDown(x,y);
     }
 
     @Override
     public void touchUp(int x, int y) {
-        if(playSigns.handleUp(x,y)){
-
-        }
-        if(playColors.handleUp(x,y)){
+        if(play.handleUp(x,y)){
 
         }
         if(settings.handleUp(x,y)){
@@ -98,8 +88,7 @@ public class MainMenuState extends GameState {
 
     @Override
     public void touchDragged(int x, int y) {
-        playSigns.handleDown(x,y);
-        playColors.handleDown(x,y);
+        play.handleDown(x,y);
         settings.handleDown(x,y);
         exit.handleDown(x,y);
     }
@@ -107,18 +96,14 @@ public class MainMenuState extends GameState {
     @Override
     public void dispose() {
         disposeTextures();
-        playSigns.dispose();
-        playColors.dispose();
+        play.dispose();
         settings.dispose();
         exit.dispose();
     }
 
     private void initTextures(){
-        playSignsUp = new Texture("");
-        playSignsDown = new Texture("");
-
-        playColorsUp = new Texture("");
-        playColorsDown = new Texture("");
+        playUp = new Texture("");
+        playDown = new Texture("");
 
         settingsUp = new Texture("");
         settingsDown = new Texture("");
@@ -130,11 +115,8 @@ public class MainMenuState extends GameState {
     }
 
     private void disposeTextures(){
-        playSignsUp.dispose();
-        playSignsDown.dispose();
-
-        playColorsUp.dispose();
-        playColorsDown.dispose();
+        playUp.dispose();
+        playDown.dispose();
 
         settingsUp.dispose();
         settingsDown.dispose();
