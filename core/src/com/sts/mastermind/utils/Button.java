@@ -11,24 +11,15 @@ public class Button {
 
     private boolean pressed;
 
-    private float scale;
-
-    private float x;
-    private float y;
-
-    public Button(Texture t1, Texture t2, float scale, float x, float y){
+    public Button(Texture t1, Texture t2, float x, float y, float scaleX, float scaleY){
         upImage = new Image(t1);
         downImage = new Image(t2);
 
-        this.scale = scale;
-        this.x = x;
-        this.y = y;
+        upImage.setScale(scaleX,scaleY);
+        downImage.setScale(scaleX,scaleY);
 
-        upImage.setPosition(x,y);
-        downImage.setPosition(x,y);
-
-        upImage.setScale(scale);
-        downImage.setScale(scale);
+        upImage.setPosition(x - scaleX*upImage.getWidth()/2,y - scaleY*upImage.getHeight()/2);
+        downImage.setPosition(x - scaleX*downImage.getWidth()/2,y - scaleY*downImage.getHeight()/2);
 
         pressed = false;
 
@@ -37,23 +28,17 @@ public class Button {
     public void handleDown(int x, int y){
         if(contains(x,y)){
             pressed = true;
+        }else{
+            pressed = false;
         }
     }
 
     public boolean handleUp(int x, int y){
+        pressed = false;
         if(contains(x,y)){
             return true;
         }
-        pressed = false;
         return false;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
     }
 
     public void draw(SpriteBatch batch, float alpha){
@@ -70,7 +55,7 @@ public class Button {
     }
 
     private boolean contains(int x, int y){
-        return x >= this.x && x <= this.x + upImage.getWidth() && y >= this.y && y <= this.y + upImage.getHeight();
+        return x >= upImage.getX() && x <= upImage.getX() + upImage.getWidth() && y >= upImage.getY() && y <= upImage.getY() + upImage.getHeight();
     }
 
 }

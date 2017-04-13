@@ -11,6 +11,7 @@ import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.listeners.ChangeState;
+import com.sts.mastermind.utils.Button;
 
 public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
 
@@ -92,7 +93,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	private int height;
 
 
-
 	public Main(DataBundle bundle){
 		this.bundle = bundle;
 	}
@@ -153,11 +153,11 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			}
 		}
 
-		stateOfGame[currentState].update(delta);
+		//stateOfGame[currentState].update(delta);
 
 		batch.begin();
 
-		stateOfGame[currentState].render(batch, alpha);
+		//stateOfGame[currentState].render(batch, alpha);
 
 		batch.end();
 
@@ -169,11 +169,11 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	}
 
 	private void initTextures(){
-		lineTexture = new Texture("");
+		lineTexture = new Texture("yellow.png");
 	}
 
 	private void disposeTextures(){
-
+		lineTexture.dispose();
 	}
 
 	@Override
@@ -205,21 +205,24 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		int y = height - screenY;
-		stateOfGame[currentState].touchDown(screenX,y);
+
+	//	stateOfGame[currentState].touchDown(screenX,y);
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		int y = height - screenY;
-		stateOfGame[currentState].touchUp(screenX,y);
+
+		//stateOfGame[currentState].touchUp(screenX,y);
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		int y = height - screenY;
-		stateOfGame[currentState].touchDragged(screenX,y);
+
+	//	stateOfGame[currentState].touchDragged(screenX,y);
 		return false;
 	}
 

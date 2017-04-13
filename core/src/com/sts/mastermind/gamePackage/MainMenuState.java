@@ -60,24 +60,24 @@ public class MainMenuState extends GameState {
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
-        logoImage.draw(batch, alpha);
+       /* logoImage.draw(batch, alpha);
         playSigns.draw(batch, alpha);
         playColors.draw(batch, alpha);
         settings.draw(batch, alpha);
-        exit.draw(batch, alpha);
+        exit.draw(batch, alpha);*/
     }
 
     @Override
     public void touchDown(int x, int y) {
-        playSigns.handleDown(x,y);
+      /*  playSigns.handleDown(x,y);
         playColors.handleDown(x,y);
         settings.handleDown(x,y);
-        exit.handleDown(x,y);
+        exit.handleDown(x,y);*/
     }
 
     @Override
     public void touchUp(int x, int y) {
-        if(playSigns.handleUp(x,y)){
+     /*   if(playSigns.handleUp(x,y)){
 
         }
         if(playColors.handleUp(x,y)){
@@ -89,15 +89,15 @@ public class MainMenuState extends GameState {
         if(exit.handleUp(x,y)){
             if(listener != null){
             }
-        }
+        }*/
     }
 
     @Override
     public void touchDragged(int x, int y) {
-        playSigns.handleDown(x,y);
+      /*  playSigns.handleDown(x,y);
         playColors.handleDown(x,y);
         settings.handleDown(x,y);
-        exit.handleDown(x,y);
+        exit.handleDown(x,y);*/
     }
 
     @Override
