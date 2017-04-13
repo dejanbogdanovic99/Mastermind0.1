@@ -115,6 +115,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		initTextures();
 
+		Gdx.input.setInputProcessor(this);
+
 	}
 
 	@Override
@@ -149,7 +151,11 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		stateOfGame[currentState].update(delta);
 
+		batch.begin();
+
 		stateOfGame[currentState].render(batch, alpha);
+
+		batch.end();
 
 	}
 
