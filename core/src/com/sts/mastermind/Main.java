@@ -139,7 +139,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		Gdx.gl.glClearColor(R_BG, G_BG, B_BG, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		float delta = Gdx.graphics.getDeltaTime();
+		float delta = Gdx.graphics.getDeltaTime(); // 0.016
 
 		if(nextState != currentState && alpha > 0){
 			alpha -= delta*alphaRatio;
@@ -163,7 +163,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			}
 		}
 
-		lineImage.moveBy(0, 1.5f);
+		lineImage.moveBy(0, 95*delta);
 
 		if(lineImage.getY() > height){
 			lineImage.setY(-lineImage.getHeight());
