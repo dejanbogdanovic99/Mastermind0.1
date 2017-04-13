@@ -29,13 +29,11 @@ public class Button {
         upImage.setScale(scaleX,scaleY);
         downImage.setScale(scaleX,scaleY);
 
-        this.x = x - scaleX*upImage.getWidth()/2;
-
-        this.y = y - scaleY*downImage.getHeight()/2;
-
         width = upImage.getWidth()*scaleX;
-
         height = upImage.getHeight()*scaleY;
+
+        this.x = x - width/2;
+        this.y = y - height/2;
 
         upImage.setPosition(this.x, this.y);
         downImage.setPosition(this.x, this.y);

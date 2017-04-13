@@ -4,10 +4,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
+import com.sts.mastermind.guiPackage.ColorButton;
+import com.sts.mastermind.guiPackage.ColorView;
 import com.sts.mastermind.listenerPackage.ChangeState;
 import com.sts.mastermind.listenerPackage.LoadCombination;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class PlayState extends GameState {
+
+
 
     /**
      * konstante
@@ -42,8 +49,16 @@ public class PlayState extends GameState {
     private Combination combination;
 
     /**
+     * tasteri za boje
+     */
+
+    private ColorButton [] colorButtons;
+
+    /**
      *  listener za
      */
+
+
 
     private LoadCombination loadListener = null;
 
@@ -54,11 +69,15 @@ public class PlayState extends GameState {
     @Override
     public void init() {
         super.init();
+
+        initColorViews();
     }
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
-
+        for(int i = 0; i < bundle.getAmountOfColors();i++){
+            s
+        }
     }
 
     @Override
@@ -74,6 +93,10 @@ public class PlayState extends GameState {
     @Override
     public void dispose() {
         super.dispose();
+
+        for(ColorButton colorButton:colorButtons){
+            colorButton.dispose();
+        }
     }
 
     public void setLoadListener(LoadCombination loadListener){
@@ -108,4 +131,91 @@ public class PlayState extends GameState {
         fullHit.dispose();
         halfHit.dispose();
     }
+
+
+    private void initColorViews(){
+        colorButtons = new ColorButton[8];
+
+        float x = width / 8;
+        float y = 100;
+
+        colorButtons[CLUB_CODE] = new ColorButton(
+                signs[CLUB_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+
+        x += width / 8;
+
+        colorButtons[SPADES_CODE] = new ColorButton(
+                signs[SPADES_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+
+        x += width / 8;
+
+        colorButtons[HEART_CODE] = new ColorButton(
+                signs[HEART_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+
+        x += width / 8;
+
+        colorButtons[DIAMOND_CODE] = new ColorButton(
+                signs[DIAMOND_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+
+        x += width / 8;
+
+        colorButtons[BULB_CODE] = new ColorButton(
+                signs[BULB_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+
+        x += width / 8;
+
+        colorButtons[STAR_CODE] = new ColorButton(
+                signs[STAR_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+
+        x += width / 8;
+
+        colorButtons[FLOWER_CODE] = new ColorButton(
+                signs[FLOWER_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+
+        x += width / 8;
+
+        colorButtons[GEAR_CODE] = new ColorButton(
+                signs[GEAR_CODE],
+                x,
+                y,
+                scaleX,
+                scaleY
+        );
+    }
+
 }

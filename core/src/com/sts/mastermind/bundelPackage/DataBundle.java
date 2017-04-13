@@ -11,7 +11,7 @@ public class DataBundle {
         Da li se ponavljaju boje
      */
 
-    private boolean repeatColors;
+    private boolean repeatSigns;
 
     /*
         koliko imamo redova koji se pogadjaju
@@ -23,30 +23,33 @@ public class DataBundle {
         sa koliko boja/znakova pogadjamo
      */
 
-    private int amountOfColors;
+    private int amountOfSigns;
 
 
-    public DataBundle(boolean volume, boolean repeatColors, int amountOfRows, int amountOfColors) {
+    public DataBundle(boolean volume,
+                      boolean repeatSigns,
+                      int amountOfRows,
+                      int amountOfSigns) {
         this.volume = volume;
-        this.repeatColors = repeatColors;
+        this.repeatSigns = repeatSigns;
         this.amountOfRows = amountOfRows;
-        this.amountOfColors = amountOfColors;
+        this.amountOfSigns = amountOfSigns;
     }
 
     public boolean getVolume() {
         return volume;
     }
 
-    public boolean getRepeatColors() {
-        return repeatColors;
+    public boolean getRepeatSigns() {
+        return repeatSigns;
     }
 
     public int getAmountOfRows() {
         return amountOfRows;
     }
 
-    public int getAmountOfColors() {
-        return amountOfColors;
+    public int getAmountOfSigns() {
+        return amountOfSigns;
     }
 
 }

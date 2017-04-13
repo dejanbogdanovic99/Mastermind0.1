@@ -14,9 +14,9 @@ public class AndroidLauncher extends AndroidApplication {
 	private static final String FILE_NAME = "mastermind_settings";
 
 	private static final String VOLUME_PASS = "volume";
-	private static final String REPEAT_COLORS_PASS = "repeatColors";
+	private static final String REPEAT_SIGNS_PASS = "repeatSigns";
 	private static final String AMOUNT_OF_ROWS_PASS = "amountOfRows";
-	private static final String AMOUNT_OF_COLORS_PASS = "amountOfColors";
+	private static final String AMOUNT_OF_SIGNS_PASS = "amountOfSigns";
 
 	private DataBundle bundle;
 
@@ -49,9 +49,9 @@ public class AndroidLauncher extends AndroidApplication {
 
 			bundle = new DataBundle(
 					file.getBoolean(VOLUME_PASS, false),
-					file.getBoolean(REPEAT_COLORS_PASS, false),
+					file.getBoolean(REPEAT_SIGNS_PASS, false),
 					file.getInt(AMOUNT_OF_ROWS_PASS, 4),
-					file.getInt(AMOUNT_OF_COLORS_PASS, 6)
+					file.getInt(AMOUNT_OF_SIGNS_PASS, 6)
 			);
 
 		}catch(Exception e){
@@ -74,9 +74,9 @@ public class AndroidLauncher extends AndroidApplication {
 		SharedPreferences.Editor editor = prefFile.edit();
 
 		editor.putBoolean(VOLUME_PASS, bundle.getVolume());
-		editor.putBoolean(REPEAT_COLORS_PASS, bundle.getRepeatColors());
+		editor.putBoolean(REPEAT_SIGNS_PASS, bundle.getRepeatSigns());
 		editor.putInt(AMOUNT_OF_ROWS_PASS, bundle.getAmountOfRows());
-		editor.putInt(AMOUNT_OF_COLORS_PASS, bundle.getAmountOfColors());
+		editor.putInt(AMOUNT_OF_SIGNS_PASS, bundle.getAmountOfSigns());
 
 		editor.apply();
 
