@@ -1,4 +1,4 @@
-package com.sts.mastermind.utils;
+package com.sts.mastermind.guiPackage;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

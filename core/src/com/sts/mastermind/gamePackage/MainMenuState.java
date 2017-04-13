@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
-import com.sts.mastermind.utils.Button;
+import com.sts.mastermind.guiPackage.Button;
 
 public class MainMenuState extends GameState {
 
@@ -24,7 +24,7 @@ public class MainMenuState extends GameState {
     private Texture exitUp;
     private Texture exitDown;
 
-    private Texture logoImageTexture;
+    private Texture logoTexture;
 
     /*
         svi tasteri u meniju
@@ -56,28 +56,31 @@ public class MainMenuState extends GameState {
     public void init() {
         initTextures();
 
+        logoImage = new Image(logoTexture);
+
+
     }
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
-       /* logoImage.draw(batch, alpha);
+        logoImage.draw(batch, alpha);
         playSigns.draw(batch, alpha);
         playColors.draw(batch, alpha);
         settings.draw(batch, alpha);
-        exit.draw(batch, alpha);*/
+        exit.draw(batch, alpha);
     }
 
     @Override
     public void touchDown(int x, int y) {
-      /*  playSigns.handleDown(x,y);
+        playSigns.handleDown(x,y);
         playColors.handleDown(x,y);
         settings.handleDown(x,y);
-        exit.handleDown(x,y);*/
+        exit.handleDown(x,y);
     }
 
     @Override
     public void touchUp(int x, int y) {
-     /*   if(playSigns.handleUp(x,y)){
+        if(playSigns.handleUp(x,y)){
 
         }
         if(playColors.handleUp(x,y)){
@@ -88,16 +91,17 @@ public class MainMenuState extends GameState {
         }
         if(exit.handleUp(x,y)){
             if(listener != null){
+
             }
-        }*/
+        }
     }
 
     @Override
     public void touchDragged(int x, int y) {
-      /*  playSigns.handleDown(x,y);
+        playSigns.handleDown(x,y);
         playColors.handleDown(x,y);
         settings.handleDown(x,y);
-        exit.handleDown(x,y);*/
+        exit.handleDown(x,y);
     }
 
     @Override
@@ -122,7 +126,7 @@ public class MainMenuState extends GameState {
         exitUp = new Texture("");
         exitDown = new Texture("");
 
-        logoImageTexture = new Texture("");
+        logoTexture = new Texture("");
     }
 
     private void disposeTextures(){
@@ -138,7 +142,7 @@ public class MainMenuState extends GameState {
         exitUp.dispose();
         exitDown.dispose();
 
-        logoImageTexture.dispose();
+        logoTexture.dispose();
     }
 
 

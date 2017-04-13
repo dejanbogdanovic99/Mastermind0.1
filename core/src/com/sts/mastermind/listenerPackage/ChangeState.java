@@ -1,4 +1,4 @@
-package com.sts.mastermind.listeners;
+package com.sts.mastermind.listenerPackage;
 
 public interface ChangeState {
 

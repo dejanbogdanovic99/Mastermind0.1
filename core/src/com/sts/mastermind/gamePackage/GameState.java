@@ -2,7 +2,7 @@ package com.sts.mastermind.gamePackage;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sts.mastermind.bundelPackage.DataBundle;
-import com.sts.mastermind.listeners.ChangeState;
+import com.sts.mastermind.listenerPackage.ChangeState;
 
 public abstract class GameState {
 

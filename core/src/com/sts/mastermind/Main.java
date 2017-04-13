@@ -11,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
-import com.sts.mastermind.listeners.ChangeState;
-import com.sts.mastermind.utils.Button;
+import com.sts.mastermind.listenerPackage.ChangeState;
 
 public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
 
