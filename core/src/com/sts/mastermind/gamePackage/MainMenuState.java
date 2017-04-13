@@ -8,6 +8,8 @@ import com.sts.mastermind.guiPackage.Button;
 
 public class MainMenuState extends GameState {
 
+    private static final int OFFSET = 60;
+
     /*
         Sve texutre za meni
 
@@ -51,9 +53,26 @@ public class MainMenuState extends GameState {
     public void init() {
         initTextures();
 
+        float x = (width / 2) - scaleX*logoTexture.getWidth()/2;
+        float y = height - scaleY*logoTexture.getHeight();
+
         logoImage = new Image(logoTexture);
 
+        logoImage.setScale(scaleX,scaleY);
+        logoImage.setPosition(x,y);
 
+        x = width /2;
+        y -= OFFSET*scaleY;
+
+        play = new Button(playUp, playDown, x, y, scaleX, scaleY);
+
+        y -= OFFSET*scaleY;
+
+        settings = new Button(settingsUp, settingsDown, x, y, scaleX, scaleY);
+
+        y -= OFFSET*scaleY;
+
+        exit = new Button(exitUp, exitDown, x, y, scaleX, scaleY);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.sts.mastermind;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -168,7 +169,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			lineImage.setY(-scaleY*lineImage.getHeight());
 		}
 
-		//stateOfGame[currentState].update(delta);
+		stateOfGame[currentState].update(delta);
 
 		batch.begin();
 
@@ -176,7 +177,11 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		//font.draw(batch, Float.toString(delta), 100, 100);
 
-		//stateOfGame[currentState].render(batch, alpha);
+		Color color = batch.getColor();
+
+		stateOfGame[currentState].render(batch, alpha);
+
+		batch.setColor(color);
 
 		batch.end();
 
@@ -225,7 +230,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		int y = height - screenY;
 
-	//	stateOfGame[currentState].touchDown(screenX,y);
+		stateOfGame[currentState].touchDown(screenX,y);
 		return false;
 	}
 
@@ -233,7 +238,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		int y = height - screenY;
 
-		//stateOfGame[currentState].touchUp(screenX,y);
+		stateOfGame[currentState].touchUp(screenX,y);
 		return false;
 	}
 
@@ -241,7 +246,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		int y = height - screenY;
 
-	//	stateOfGame[currentState].touchDragged(screenX,y);
+		stateOfGame[currentState].touchDragged(screenX,y);
 		return false;
 	}
 
