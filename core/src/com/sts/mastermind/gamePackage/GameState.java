@@ -18,7 +18,12 @@ public abstract class GameState {
 
     protected int height;
 
-    public GameState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
+    public GameState(
+            DataBundle bundle,
+            float scaleX,
+            float scaleY,
+            int width,
+            int height) {
         this.bundle = bundle;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
@@ -26,7 +31,11 @@ public abstract class GameState {
         this.height = height;
     }
 
-    public abstract void init();
+    public void init(){
+        initTextures();
+    }
+
+    protected void initTextures(){}
 
     public abstract void render(SpriteBatch batch, float alpha);
 
@@ -34,19 +43,17 @@ public abstract class GameState {
 
     public abstract void touchUp(int x, int y);
 
-    public abstract void touchDragged(int x, int y);
-
     public void update(float delta){}
 
-    public abstract void dispose();
+    public void dispose(){
+        disposeTextures();
+    }
 
-    public void setListener(ChangeState listener){
+    protected void disposeTextures(){}
+
+    public void setChangeListener(ChangeState listener){
         this.listener = listener;
     }
 
-    public void setScale(float scaleX, float scaleY){
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
-    }
 }
 

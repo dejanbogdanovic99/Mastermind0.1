@@ -17,7 +17,12 @@ public class Button {
     private float x;
     private float y;
 
-    public Button(Texture t1, Texture t2, float x, float y, float scaleX, float scaleY){
+    public Button(Texture t1,
+                  Texture t2,
+                  float x,
+                  float y,
+                  float scaleX,
+                  float scaleY){
         upImage = new Image(t1);
         downImage = new Image(t2);
 

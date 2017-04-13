@@ -45,13 +45,18 @@ public class MainMenuState extends GameState {
         objekat interfejsa, za promenu stanja
      */
 
-    public MainMenuState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
+    public MainMenuState(
+            DataBundle bundle,
+            float scaleX,
+            float scaleY,
+            int width,
+            int height) {
         super(bundle, scaleX, scaleY, width, height);
     }
 
     @Override
     public void init() {
-        initTextures();
+        super.init();
 
         float x = (width / 2) - scaleX*logoTexture.getWidth()/2;
         float y = height - scaleY*logoTexture.getHeight();
@@ -66,11 +71,11 @@ public class MainMenuState extends GameState {
 
         play = new Button(playUp, playDown, x, y, scaleX, scaleY);
 
-        y -= OFFSET*scaleY;
+        y -= (OFFSET*scaleY+playUp.getHeight()*scaleY);
 
         settings = new Button(settingsUp, settingsDown, x, y, scaleX, scaleY);
 
-        y -= OFFSET*scaleY;
+        y -= (OFFSET*scaleY+settingsUp.getHeight()*scaleY);
 
         exit = new Button(exitUp, exitDown, x, y, scaleX, scaleY);
     }
@@ -99,28 +104,21 @@ public class MainMenuState extends GameState {
 
         }
         if(exit.handleUp(x,y)){
-            if(listener != null){
 
-            }
         }
     }
 
     @Override
-    public void touchDragged(int x, int y) {
-        play.handleDown(x,y);
-        settings.handleDown(x,y);
-        exit.handleDown(x,y);
-    }
-
-    @Override
     public void dispose() {
-        disposeTextures();
+        super.dispose();
         play.dispose();
         settings.dispose();
         exit.dispose();
+        logoImage = null;
     }
 
-    private void initTextures(){
+    @Override
+    protected void initTextures(){
         playUp = new Texture("play1.png");
         playDown = new Texture("play2.png");
 
@@ -133,7 +131,8 @@ public class MainMenuState extends GameState {
         logoTexture = new Texture("logo.png");
     }
 
-    private void disposeTextures(){
+    @Override
+    protected void disposeTextures(){
         playUp.dispose();
         playDown.dispose();
 

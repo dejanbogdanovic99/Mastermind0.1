@@ -6,15 +6,16 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
+import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.listenerPackage.ChangeState;
+import com.sts.mastermind.listenerPackage.LoadCombination;
 
-public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
+public class Main extends ApplicationAdapter implements InputProcessor, ChangeState, LoadCombination{
 
 	/**
 	 Konstante za delove igre
@@ -23,6 +24,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int SETTINGS_STATE = 1;
 	public static final int PLAY_STATE = 2;
+	public static final int POST_PLAY_STATE = 3;
 
 
 	/**
@@ -32,7 +34,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	private final int STANDARD_WIDTH = 1080;
 	private final int STANDARD_HEIGHT = 1920;
 
-	private final int AMOUNT_OF_STATES = 5;
+	private final int AMOUNT_OF_STATES = 4;
 
 	private final float R_BG = 0.886f;
 	private final float G_BG = 0.886f;
@@ -63,6 +65,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 	private int nextState;
 
+	private boolean ready;
+
 
 	/**
 	 vidljivost igre
@@ -86,8 +90,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	/**
 	 scale slika
 	 */
-
-	private BitmapFont font;
 
 	private float scaleX;
 	private float scaleY;
@@ -116,20 +118,35 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		nextState = MAIN_MENU_STATE;
 
+
+
 		stateOfGame = new GameState[AMOUNT_OF_STATES];
 
-		stateOfGame[MAIN_MENU_STATE] = new MainMenuState(bundle, scaleX, scaleY, width, height);
+		stateOfGame[MAIN_MENU_STATE] = new MainMenuState(bundle,
+				scaleX,
+				scaleY,
+				width,
+				height
+		);
+
+
+		stateOfGame[MAIN_MENU_STATE].init();
+
+		stateOfGame[MAIN_MENU_STATE].setChangeListener(this);
+
+
+
 
 		initTextures();
 
 		lineImage = new Image(lineTexture);
 		lineImage.setScale(scaleX, scaleY);
-		lineImage.setX(-260*scaleX);
+		lineImage.setX(-1108*scaleX);
 		lineImage.setY(-scaleY*lineImage.getHeight());
 
-		font = new BitmapFont();
-
 		Gdx.input.setInputProcessor(this);
+
+		ready = true;
 
 	}
 
@@ -145,6 +162,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			alpha -= delta*alphaRatio;
 			if(alpha < 0){
 				alpha = 0;
+			}
+			if(alpha == 0 && ready){
 				final int oldState = currentState;
 				currentState = nextState;
 				new Thread(new Runnable() {
@@ -163,7 +182,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			}
 		}
 
-		lineImage.moveBy(0, 95*delta);
+		lineImage.moveBy(0, 200*delta);
 
 		if(lineImage.getY() > height){
 			lineImage.setY(-scaleY*lineImage.getHeight());
@@ -174,8 +193,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		batch.begin();
 
 		lineImage.draw(batch, 1);
-
-		//font.draw(batch, Float.toString(delta), 100, 100);
 
 		Color color = batch.getColor();
 
@@ -190,6 +207,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	@Override
 	public void dispose(){
 		disposeTextures();
+		stateOfGame[MAIN_MENU_STATE].dispose();
 	}
 
 	private void initTextures(){
@@ -206,9 +224,16 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				ready = false;
 				stateOfGame[nextState].init();
+				ready = true;
 			}
 		}).start();
+	}
+
+	@Override
+	public void loadCombination(Combination combination) {
+
 	}
 
 	@Override
@@ -246,7 +271,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		int y = height - screenY;
 
-		stateOfGame[currentState].touchDragged(screenX,y);
+		stateOfGame[currentState].touchDown(screenX,y);
 		return false;
 	}
 
