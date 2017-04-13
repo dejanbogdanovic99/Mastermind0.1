@@ -52,4 +52,19 @@ public class DataBundle {
         return amountOfSigns;
     }
 
+    public void setVolume(boolean volume) {
+        this.volume = volume;
+    }
+
+    public void setRepeatSigns(boolean repeatSigns) {
+        this.repeatSigns = repeatSigns;
+    }
+
+    public void setAmountOfRows(int amountOfRows) {
+        this.amountOfRows = amountOfRows;
+    }
+
+    public void setAmountOfSigns(int amountOfSigns) {
+        this.amountOfSigns = amountOfSigns;
+    }
 }
