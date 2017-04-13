@@ -123,7 +123,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		lineImage = new Image(lineTexture);
 		lineImage.setScale(scaleX, scaleY);
-		lineImage.setX(0);
+		lineImage.setX(-260*scaleX);
 		lineImage.setY(-scaleY*lineImage.getHeight());
 
 		font = new BitmapFont();
@@ -165,7 +165,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		lineImage.moveBy(0, 95*delta);
 
 		if(lineImage.getY() > height){
-			lineImage.setY(-lineImage.getHeight());
+			lineImage.setY(-scaleY*lineImage.getHeight());
 		}
 
 		//stateOfGame[currentState].update(delta);
@@ -174,7 +174,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		lineImage.draw(batch, 1);
 
-		font.draw(batch, Float.toString(delta), 100, 100);
+		//font.draw(batch, Float.toString(delta), 100, 100);
 
 		//stateOfGame[currentState].render(batch, alpha);
 

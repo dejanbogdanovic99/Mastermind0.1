@@ -102,16 +102,16 @@ public class MainMenuState extends GameState {
     }
 
     private void initTextures(){
-        playUp = new Texture("");
-        playDown = new Texture("");
+        playUp = new Texture("play1.png");
+        playDown = new Texture("play2.png");
 
-        settingsUp = new Texture("");
-        settingsDown = new Texture("");
+        settingsUp = new Texture("settings1.png");
+        settingsDown = new Texture("settings2.png");
 
-        exitUp = new Texture("");
-        exitDown = new Texture("");
+        exitUp = new Texture("exit1.png");
+        exitDown = new Texture("exit2.png");
 
-        logoTexture = new Texture("");
+        logoTexture = new Texture("logo.png");
     }
 
     private void disposeTextures(){
