@@ -12,6 +12,7 @@ import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
+import com.sts.mastermind.gamePackage.PlayState;
 import com.sts.mastermind.listenerPackage.ChangeState;
 import com.sts.mastermind.listenerPackage.LoadCombination;
 
@@ -122,7 +123,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		stateOfGame = new GameState[AMOUNT_OF_STATES];
 
-		stateOfGame[MAIN_MENU_STATE] = new MainMenuState(bundle,
+		stateOfGame[MAIN_MENU_STATE] = new MainMenuState(
+				bundle,
 				scaleX,
 				scaleY,
 				width,
@@ -134,6 +136,20 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		stateOfGame[MAIN_MENU_STATE].setChangeListener(this);
 
+
+		stateOfGame[PLAY_STATE] = new PlayState(
+				bundle,
+				scaleX,
+				scaleY,
+				width,
+				height
+		);
+
+		stateOfGame[PLAY_STATE].init();
+
+		stateOfGame[PLAY_STATE].setChangeListener(this);
+
+		((PlayState)stateOfGame[PLAY_STATE]).setLoadListener(this);
 
 
 
@@ -162,16 +178,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			alpha -= delta*alphaRatio;
 			if(alpha < 0){
 				alpha = 0;
-			}
-			if(alpha == 0 && ready){
-				final int oldState = currentState;
 				currentState = nextState;
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						stateOfGame[oldState].dispose();
-					}
-				}).start();
 			}
 		}
 
@@ -194,11 +201,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		lineImage.draw(batch, 1);
 
-		Color color = batch.getColor();
-
 		stateOfGame[currentState].render(batch, alpha);
-
-		batch.setColor(color);
 
 		batch.end();
 
@@ -208,6 +211,10 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public void dispose(){
 		disposeTextures();
 		stateOfGame[MAIN_MENU_STATE].dispose();
+		stateOfGame[PLAY_STATE].dispose();
+
+
+		batch.dispose();
 	}
 
 	private void initTextures(){
@@ -221,14 +228,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	@Override
 	public void changeState(int newState) {
 		nextState = newState;
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ready = false;
-				stateOfGame[nextState].init();
-				ready = true;
-			}
-		}).start();
 	}
 
 	@Override

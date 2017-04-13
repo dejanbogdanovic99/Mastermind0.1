@@ -25,6 +25,7 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+
 		loadConfig();
 
 		Main game = new Main(bundle);
@@ -66,19 +67,23 @@ public class AndroidLauncher extends AndroidApplication {
 
 	private void saveConfig(){
 
-		SharedPreferences prefFile = getSharedPreferences(
-				FILE_NAME,
-				Context.MODE_PRIVATE
-		);
+		try {
 
-		SharedPreferences.Editor editor = prefFile.edit();
+			SharedPreferences prefFile = getSharedPreferences(
+					FILE_NAME,
+					Context.MODE_PRIVATE
+			);
 
-		editor.putBoolean(VOLUME_PASS, bundle.getVolume());
-		editor.putBoolean(REPEAT_SIGNS_PASS, bundle.getRepeatSigns());
-		editor.putInt(AMOUNT_OF_ROWS_PASS, bundle.getAmountOfRows());
-		editor.putInt(AMOUNT_OF_SIGNS_PASS, bundle.getAmountOfSigns());
+			SharedPreferences.Editor editor = prefFile.edit();
 
-		editor.apply();
+			editor.putBoolean(VOLUME_PASS, bundle.getVolume());
+			editor.putBoolean(REPEAT_SIGNS_PASS, bundle.getRepeatSigns());
+			editor.putInt(AMOUNT_OF_ROWS_PASS, bundle.getAmountOfRows());
+			editor.putInt(AMOUNT_OF_SIGNS_PASS, bundle.getAmountOfSigns());
+
+			editor.apply();
+
+		}catch(Exception e){}
 
 	}
 

@@ -3,6 +3,7 @@ package com.sts.mastermind.gamePackage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.guiPackage.Button;
 
@@ -98,7 +99,9 @@ public class MainMenuState extends GameState {
     @Override
     public void touchUp(int x, int y) {
         if(play.handleUp(x,y)){
-
+            if(listener != null){
+                listener.changeState(Main.PLAY_STATE);
+            }
         }
         if(settings.handleUp(x,y)){
 

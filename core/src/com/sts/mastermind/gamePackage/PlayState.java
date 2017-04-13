@@ -5,12 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.guiPackage.ColorButton;
-import com.sts.mastermind.guiPackage.ColorView;
-import com.sts.mastermind.listenerPackage.ChangeState;
 import com.sts.mastermind.listenerPackage.LoadCombination;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class PlayState extends GameState {
 
@@ -70,13 +65,13 @@ public class PlayState extends GameState {
     public void init() {
         super.init();
 
-        initColorViews();
+        initColorButtons();
     }
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
-        for(int i = 0; i < bundle.getAmountOfColors();i++){
-            s
+        for(int i = 0; i < 8;i++){
+            colorButtons[i].draw(batch, alpha);
         }
     }
 
@@ -133,11 +128,11 @@ public class PlayState extends GameState {
     }
 
 
-    private void initColorViews(){
+    private void initColorButtons(){
         colorButtons = new ColorButton[8];
 
-        float x = width / 8;
-        float y = 100;
+        float x = width / 9;
+        float y = 100*scaleY;
 
         colorButtons[CLUB_CODE] = new ColorButton(
                 signs[CLUB_CODE],
@@ -147,7 +142,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 8;
+        x += width / 9;
 
         colorButtons[SPADES_CODE] = new ColorButton(
                 signs[SPADES_CODE],
@@ -157,7 +152,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 8;
+        x += width / 9;
 
         colorButtons[HEART_CODE] = new ColorButton(
                 signs[HEART_CODE],
@@ -167,7 +162,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 8;
+        x += width / 9;
 
         colorButtons[DIAMOND_CODE] = new ColorButton(
                 signs[DIAMOND_CODE],
@@ -177,7 +172,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 8;
+        x += width / 9;
 
         colorButtons[BULB_CODE] = new ColorButton(
                 signs[BULB_CODE],
@@ -187,7 +182,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 8;
+        x += width / 9;
 
         colorButtons[STAR_CODE] = new ColorButton(
                 signs[STAR_CODE],
@@ -197,7 +192,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 8;
+        x += width / 9;
 
         colorButtons[FLOWER_CODE] = new ColorButton(
                 signs[FLOWER_CODE],
@@ -207,7 +202,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 8;
+        x += width / 9;
 
         colorButtons[GEAR_CODE] = new ColorButton(
                 signs[GEAR_CODE],

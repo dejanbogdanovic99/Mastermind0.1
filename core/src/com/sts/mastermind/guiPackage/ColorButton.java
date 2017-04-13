@@ -21,16 +21,13 @@ public class ColorButton {
                        float scaleY) {
         image = new Image(texture);
 
-        float sX = scaleX*1.5f;
-        float sY = scaleY*1.5f;
-
-        width = image.getWidth()*sX;
-        height = image.getHeight()*sY;
+        width = image.getWidth()*scaleX;
+        height = image.getHeight()*scaleY;
 
         this.x = x - width/2;
         this.y = y - height/2;
 
-        image.setScale(sX, sY);
+        image.setScale(scaleX, scaleY);
         image.setPosition(this.x,this.y);
     }
 
