@@ -11,6 +11,12 @@ public class Button {
 
     private boolean pressed;
 
+    private float width;
+    private float height;
+
+    private float x;
+    private float y;
+
     public Button(Texture t1, Texture t2, float x, float y, float scaleX, float scaleY){
         upImage = new Image(t1);
         downImage = new Image(t2);
@@ -18,8 +24,16 @@ public class Button {
         upImage.setScale(scaleX,scaleY);
         downImage.setScale(scaleX,scaleY);
 
-        upImage.setPosition(x - scaleX*upImage.getWidth()/2,y - scaleY*upImage.getHeight()/2);
-        downImage.setPosition(x - scaleX*downImage.getWidth()/2,y - scaleY*downImage.getHeight()/2);
+        this.x = x - scaleX*upImage.getWidth()/2;
+
+        this.y = y - scaleY*downImage.getHeight()/2;
+
+        width = upImage.getWidth()*scaleX;
+
+        height = upImage.getHeight()*scaleY;
+
+        upImage.setPosition(this.x, this.y);
+        downImage.setPosition(this.x, this.y);
 
         pressed = false;
 
@@ -55,7 +69,7 @@ public class Button {
     }
 
     private boolean contains(int x, int y){
-        return x >= upImage.getX() && x <= upImage.getX() + upImage.getWidth() && y >= upImage.getY() && y <= upImage.getY() + upImage.getHeight();
+        return x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + height;
     }
 
 }
