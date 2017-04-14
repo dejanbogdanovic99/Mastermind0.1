@@ -3,7 +3,6 @@ package com.sts.mastermind;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,9 +13,8 @@ import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.gamePackage.PlayState;
 import com.sts.mastermind.listenerPackage.ChangeState;
-import com.sts.mastermind.listenerPackage.LoadCombination;
 
-public class Main extends ApplicationAdapter implements InputProcessor, ChangeState, LoadCombination{
+public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
 
 	/**
 	 Konstante za delove igre
@@ -88,6 +86,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 	private DataBundle bundle;
 
+	private Combination currentCombination;
+
 	/**
 	 scale slika
 	 */
@@ -148,8 +148,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[PLAY_STATE].init();
 
 		stateOfGame[PLAY_STATE].setChangeListener(this);
-
-		((PlayState)stateOfGame[PLAY_STATE]).setLoadListener(this);
 
 
 
@@ -228,11 +226,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	@Override
 	public void changeState(int newState) {
 		nextState = newState;
-	}
-
-	@Override
-	public void loadCombination(Combination combination) {
-
 	}
 
 	@Override

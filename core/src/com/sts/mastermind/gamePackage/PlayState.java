@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.guiPackage.ColorButton;
-import com.sts.mastermind.listenerPackage.LoadCombination;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +72,6 @@ public class PlayState extends GameState {
      */
 
 
-
-    private LoadCombination loadListener = null;
-
     public PlayState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
         super(bundle, scaleX, scaleY, width, height);
     }
@@ -89,7 +85,7 @@ public class PlayState extends GameState {
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
-        for(int i = 0; i < 8;i++){
+        for(int i = 0; i < bundle.getAmountOfSigns();i++){
             colorButtons[i].draw(batch, alpha);
         }
         for(int i = 0; i < enteredCombination.size();i++){
@@ -145,10 +141,6 @@ public class PlayState extends GameState {
         for(ColorButton colorButton:colorButtons){
             colorButton.dispose();
         }
-    }
-
-    public void setLoadListener(LoadCombination loadListener){
-        this.loadListener = loadListener;
     }
 
     @Override
