@@ -10,15 +10,18 @@ public class ColorButton {
 
     private float x;
     private float y;
+    private final int textureCode;
 
     private float width;
     private float height;
 
     public ColorButton(Texture texture,
+                       int textureCode,
                        float x,
                        float y,
                        float scaleX,
                        float scaleY) {
+        this.textureCode = textureCode;
         image = new Image(texture);
 
         width = image.getWidth()*scaleX;
@@ -36,6 +39,18 @@ public class ColorButton {
             return true;
         }
         return false;
+    }
+
+    public int getTextureCode() {
+        return textureCode;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 
     public void draw(SpriteBatch batch, float alpha){

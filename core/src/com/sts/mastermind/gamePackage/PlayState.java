@@ -2,10 +2,14 @@ package com.sts.mastermind.gamePackage;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.guiPackage.ColorButton;
 import com.sts.mastermind.listenerPackage.LoadCombination;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayState extends GameState {
 
@@ -48,6 +52,21 @@ public class PlayState extends GameState {
      */
 
     private ColorButton [] colorButtons;
+    /**
+     * broj boja
+     */
+    private int signsToGuess = 5;
+    /**
+     * broj pokusaja
+    */
+    private int attempts = 0;
+    private int maxAttempts = 6;
+
+    /**
+     * Uneta kombinacija
+     */
+    private List<ColorButton> enteredCombination = new ArrayList<ColorButton>();
+    private List<Image> checkedCombinations = new ArrayList<Image>();
 
     /**
      *  listener za
@@ -73,11 +92,45 @@ public class PlayState extends GameState {
         for(int i = 0; i < 8;i++){
             colorButtons[i].draw(batch, alpha);
         }
+        for(int i = 0; i < enteredCombination.size();i++){
+            enteredCombination.get(i).draw(batch, alpha);
+        }
+        for(int i = 0; i < checkedCombinations.size();i++){
+            checkedCombinations.get(i).draw(batch, alpha);
+        }
     }
 
     @Override
     public void touchDown(int x, int y) {
-
+        for(int i = 0;i < colorButtons.length;i++){
+            if(i == GEAR_CODE){
+                if (colorButtons[i].isPressed(x, y) && enteredCombination.size() == signsToGuess){
+                    /**
+                     * Ovde treba da ide provera da li je tacna kombinacija
+                     */
+                    for(ColorButton button:enteredCombination){
+                        checkedCombinations.add(new Image(signs[button.getTextureCode()]));
+                        checkedCombinations.get(checkedCombinations.size()-1).setX(button.getX());
+                        checkedCombinations.get(checkedCombinations.size()-1).setY(button.getY());
+                        checkedCombinations.get(checkedCombinations.size()-1).setScale(scaleX,scaleY);
+                        attempts++;
+                    }
+                    for(ColorButton colorButton:enteredCombination){
+                        colorButton.dispose();
+                    }
+                    enteredCombination.clear();
+                }
+            }else if(colorButtons[i].isPressed(x, y) && enteredCombination.size() < signsToGuess)
+                enteredCombination.add(new ColorButton(signs[colorButtons[i].getTextureCode()],
+                        colorButtons[i].getTextureCode(),
+                        width / 12 + width / 12 * enteredCombination.size(),
+                        height * scaleY - height / 50 - (height / 50) * attempts,
+                        scaleX, scaleY));
+        }
+        if(enteredCombination.size()>0) {
+            if (enteredCombination.get(enteredCombination.size() - 1).isPressed(x, y))
+                enteredCombination.remove(enteredCombination.size() - 1);
+        }
     }
 
     @Override
@@ -136,6 +189,7 @@ public class PlayState extends GameState {
 
         colorButtons[CLUB_CODE] = new ColorButton(
                 signs[CLUB_CODE],
+                CLUB_CODE,
                 x,
                 y,
                 scaleX,
@@ -146,6 +200,7 @@ public class PlayState extends GameState {
 
         colorButtons[SPADES_CODE] = new ColorButton(
                 signs[SPADES_CODE],
+                SPADES_CODE,
                 x,
                 y,
                 scaleX,
@@ -156,6 +211,7 @@ public class PlayState extends GameState {
 
         colorButtons[HEART_CODE] = new ColorButton(
                 signs[HEART_CODE],
+                HEART_CODE,
                 x,
                 y,
                 scaleX,
@@ -166,6 +222,7 @@ public class PlayState extends GameState {
 
         colorButtons[DIAMOND_CODE] = new ColorButton(
                 signs[DIAMOND_CODE],
+                DIAMOND_CODE,
                 x,
                 y,
                 scaleX,
@@ -176,6 +233,7 @@ public class PlayState extends GameState {
 
         colorButtons[BULB_CODE] = new ColorButton(
                 signs[BULB_CODE],
+                BULB_CODE,
                 x,
                 y,
                 scaleX,
@@ -186,6 +244,7 @@ public class PlayState extends GameState {
 
         colorButtons[STAR_CODE] = new ColorButton(
                 signs[STAR_CODE],
+                STAR_CODE,
                 x,
                 y,
                 scaleX,
@@ -196,6 +255,7 @@ public class PlayState extends GameState {
 
         colorButtons[FLOWER_CODE] = new ColorButton(
                 signs[FLOWER_CODE],
+                FLOWER_CODE,
                 x,
                 y,
                 scaleX,
@@ -206,6 +266,7 @@ public class PlayState extends GameState {
 
         colorButtons[GEAR_CODE] = new ColorButton(
                 signs[GEAR_CODE],
+                GEAR_CODE,
                 x,
                 y,
                 scaleX,
