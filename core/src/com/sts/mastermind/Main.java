@@ -2,9 +2,11 @@ package com.sts.mastermind;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
@@ -12,6 +14,7 @@ import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.gamePackage.PlayState;
+import com.sts.mastermind.gamePackage.SettingsState;
 import com.sts.mastermind.listenerPackage.ChangeState;
 
 public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
@@ -23,7 +26,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int SETTINGS_STATE = 1;
 	public static final int PLAY_STATE = 2;
-	public static final int POST_PLAY_STATE = 3;
 
 
 	/**
@@ -33,7 +35,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	private final int STANDARD_WIDTH = 1080;
 	private final int STANDARD_HEIGHT = 1920;
 
-	private final int AMOUNT_OF_STATES = 4;
+	private final int AMOUNT_OF_STATES = 3;
 
 	private final float R_BG = 0.886f;
 	private final float G_BG = 0.886f;
@@ -64,8 +66,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 	private int nextState;
 
-	private boolean ready;
-
 
 	/**
 	 vidljivost igre
@@ -85,8 +85,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	 */
 
 	private DataBundle bundle;
-
-	private Combination currentCombination;
 
 	/**
 	 scale slika
@@ -150,6 +148,18 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[PLAY_STATE].setChangeListener(this);
 
 
+		stateOfGame[SETTINGS_STATE] = new SettingsState(
+				bundle,
+				scaleX,
+				scaleY,
+				width,
+				height
+		);
+
+		stateOfGame[SETTINGS_STATE].init();
+
+		stateOfGame[SETTINGS_STATE].setChangeListener(this);
+
 
 		initTextures();
 
@@ -160,8 +170,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 		Gdx.input.setInputProcessor(this);
 
-		ready = true;
-
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override
@@ -210,7 +219,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		disposeTextures();
 		stateOfGame[MAIN_MENU_STATE].dispose();
 		stateOfGame[PLAY_STATE].dispose();
-
+		stateOfGame[SETTINGS_STATE].dispose();
 
 		batch.dispose();
 	}
@@ -230,6 +239,9 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 	@Override
 	public boolean keyDown(int keycode) {
+		if(keycode == Input.Keys.BACK){
+			stateOfGame[currentState].backPressed();
+		}
 		return false;
 	}
 

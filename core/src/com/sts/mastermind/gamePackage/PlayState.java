@@ -3,6 +3,7 @@ package com.sts.mastermind.gamePackage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.guiPackage.ColorButton;
@@ -67,9 +68,7 @@ public class PlayState extends GameState {
     private List<ColorButton> enteredCombination = new ArrayList<ColorButton>();
     private List<Image> checkedCombinations = new ArrayList<Image>();
 
-    /**
-     *  listener za
-     */
+
 
 
     public PlayState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
@@ -132,6 +131,13 @@ public class PlayState extends GameState {
     @Override
     public void touchUp(int x, int y) {
 
+    }
+
+    @Override
+    public void backPressed() {
+        if(listener != null) {
+            listener.changeState(Main.MAIN_MENU_STATE);
+        }
     }
 
     @Override

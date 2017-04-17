@@ -1,5 +1,6 @@
 package com.sts.mastermind.gamePackage;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -104,11 +105,18 @@ public class MainMenuState extends GameState {
             }
         }
         if(settings.handleUp(x,y)){
-
+            if(listener != null){
+                listener.changeState(Main.SETTINGS_STATE);
+            }
         }
         if(exit.handleUp(x,y)){
-
+            Gdx.app.exit();
         }
+    }
+
+    @Override
+    public void backPressed() {
+        Gdx.app.exit();
     }
 
     @Override

@@ -21,6 +21,10 @@ public class Combination {
         colors[i] = color;
     }
 
+    public int size(){
+        return colors.length;
+    }
+
     public void reset(){
         for(int i = 0; i < colors.length;i++){
             colors[i] = PlayState.NO_SIGN;
