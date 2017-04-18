@@ -191,10 +191,6 @@ public class PlayState extends GameState {
     @Override
     public void dispose() {
         super.dispose();
-
-        for(ColorButton colorButton:colorButtons){
-            colorButton.dispose();
-        }
     }
 
     @Override
