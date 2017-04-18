@@ -36,7 +36,7 @@ public class CheckView {
         }
 
     }
-    public void setPossition(float posX, float posY){
+    public void setPosition(float posX, float posY){
         float x = posX;
 
         for(int i = 0; i < fullAmount ;i++){

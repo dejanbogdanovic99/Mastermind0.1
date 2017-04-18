@@ -31,11 +31,9 @@ public abstract class GameState {
         this.height = height;
     }
 
-    public void init(){
-        initTextures();
-    }
+    public abstract void init();
 
-    protected void initTextures(){}
+    public abstract void initTextures();
 
     public abstract void render(SpriteBatch batch, float alpha);
 

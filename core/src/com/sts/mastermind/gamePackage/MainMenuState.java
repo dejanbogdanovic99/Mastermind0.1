@@ -58,7 +58,6 @@ public class MainMenuState extends GameState {
 
     @Override
     public void init() {
-        super.init();
 
         float x = (width / 2) - scaleX*logoTexture.getWidth()/2;
         float y = height - scaleY*logoTexture.getHeight();
@@ -122,14 +121,10 @@ public class MainMenuState extends GameState {
     @Override
     public void dispose() {
         super.dispose();
-        play.dispose();
-        settings.dispose();
-        exit.dispose();
-        logoImage = null;
     }
 
     @Override
-    protected void initTextures(){
+    public void initTextures(){
         playUp = new Texture("play1.png");
         playDown = new Texture("play2.png");
 

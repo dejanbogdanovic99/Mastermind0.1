@@ -96,6 +96,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	private int width;
 	private int height;
 
+	private boolean ready;
+
 
 	public Main(DataBundle bundle){
 		this.bundle = bundle;
@@ -130,6 +132,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		);
 
 
+		stateOfGame[MAIN_MENU_STATE].initTextures();
 		stateOfGame[MAIN_MENU_STATE].init();
 
 		stateOfGame[MAIN_MENU_STATE].setChangeListener(this);
@@ -143,7 +146,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 				height
 		);
 
-		stateOfGame[PLAY_STATE].init();
+		stateOfGame[PLAY_STATE].initTextures();
 
 		stateOfGame[PLAY_STATE].setChangeListener(this);
 
@@ -156,10 +159,11 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 				height
 		);
 
-		stateOfGame[SETTINGS_STATE].init();
+		stateOfGame[SETTINGS_STATE].initTextures();
 
 		stateOfGame[SETTINGS_STATE].setChangeListener(this);
 
+		ready = true;
 
 		initTextures();
 
@@ -185,6 +189,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			alpha -= delta*alphaRatio;
 			if(alpha < 0){
 				alpha = 0;
+			}
+			if(alpha == 0 && ready){
 				currentState = nextState;
 			}
 		}
@@ -235,6 +241,14 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	@Override
 	public void changeState(int newState) {
 		nextState = newState;
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ready = false;
+				stateOfGame[nextState].init();
+				ready = true;
+			}
+		}).start();
 	}
 
 	@Override

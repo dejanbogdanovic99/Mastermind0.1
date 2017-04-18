@@ -98,7 +98,6 @@ public class PlayState extends GameState {
 
     @Override
     public void init() {
-        super.init();
 
         initColorButtons();
 
@@ -168,7 +167,7 @@ public class PlayState extends GameState {
 
         if(checkButton.handleUp(x,y)){
             checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, 6, 4 ,2);
-            checkView.setPossition(400,400);
+            checkView.setPosition(400,400);
             pastView.add(combinationView, checkView);
         }
 
@@ -205,7 +204,7 @@ public class PlayState extends GameState {
     }
 
     @Override
-    protected void initTextures() {
+    public void initTextures() {
         signs = new Texture[8];
         signs[CLUB_CODE] = new Texture("club.png");
         signs[SPADES_CODE] = new Texture("spades.png");

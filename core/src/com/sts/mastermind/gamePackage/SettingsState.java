@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
+import com.sts.mastermind.guiPackage.BasicImage;
 import com.sts.mastermind.guiPackage.Button;
 import com.sts.mastermind.guiPackage.CheckButton;
 
 public class SettingsState extends GameState {
 
-    private final int OFFSET = 100;
+    private final int OFFSET = 300;
     private final int MIN_ROWS = 4;
     private final int MAX_ROWS = 6;
     private final int MIN_SIGNS = 6;
@@ -39,8 +40,10 @@ public class SettingsState extends GameState {
     private Button incSignsButton;
     private Button decSignsButton;
 
-    private Image rowImage;
-    private Image signImage;
+    private Button menuButton;
+
+    private BasicImage rowImage;
+    private BasicImage signImage;
 
     private CheckButton musicButton;
 
@@ -53,7 +56,6 @@ public class SettingsState extends GameState {
 
     @Override
     public void init() {
-        super.init();
 
         float x = width / 2;
 
@@ -61,47 +63,66 @@ public class SettingsState extends GameState {
 
         musicButton = new CheckButton(playMusicChecked, playMusicUnchecked, bundle.getVolume(), x, y, scaleX, scaleY);
 
-        y = height - 4*scaleY*OFFSET;
+        y -= scaleY*OFFSET;
 
         repeatSignsButton = new CheckButton(repeatSignsChecked, repeatSignsUnchecked, bundle.getRepeatSigns(), x, y, scaleX, scaleY);
 
-        y -= 300;
+        y -= scaleY*OFFSET;
 
-
-
-
-        x += 100;
+        x += scaleX*OFFSET/2;
 
         incRowsButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
 
-        x-= 200;
+        x-= scaleX*OFFSET;
 
         decRowsButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
 
         x = width / 2;
 
-        rowImage = new Image(numberTextures[bundle.getAmountOfRows()-4]);
+        rowImage = new BasicImage(numberTextures[bundle.getAmountOfRows()-4], x, y, scaleX, scaleY);
 
-        rowImage.setScale(scaleX,scaleY);
+        y -= scaleY*OFFSET;
 
-        x -= ((rowImage.getWidth()*scaleX)/2);
-        y -= ((rowImage.getHeight()*scaleY)/2);
-        rowImage.setPosition(x,y);
+        x += scaleX*OFFSET/2;
+
+        incSignsButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
+
+        x -= scaleX*OFFSET;
+
+        decSignsButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
+
+        x = width / 2;
+
+        signImage = new BasicImage(numberTextures[bundle.getAmountOfSigns()-4], x, y, scaleX, scaleY);
+
+        y -= scaleY*OFFSET;
+
+        menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
     }
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
         musicButton.draw(batch, alpha);
         repeatSignsButton.draw(batch, alpha);
+
         incRowsButton.draw(batch, alpha);
         decRowsButton.draw(batch, alpha);
         rowImage.draw(batch,alpha);
+
+        incSignsButton.draw(batch,alpha);
+        decSignsButton.draw(batch,alpha);
+        signImage.draw(batch,alpha);
+
+        menuButton.draw(batch, alpha);
     }
 
     @Override
     public void touchDown(int x, int y) {
         incRowsButton.handleDown(x,y);
         decRowsButton.handleDown(x,y);
+        incSignsButton.handleDown(x,y);
+        decSignsButton.handleDown(x,y);
+        menuButton.handleDown(x,y);
     }
 
     @Override
@@ -118,24 +139,38 @@ public class SettingsState extends GameState {
             bundle.setRepeatSigns(repeatSignsButton.isChecked());
         }
 
-        float xI = rowImage.getX();
-        float yI = rowImage.getY();
 
         if(decRowsButton.handleUp(x,y)){
             if(bundle.getAmountOfRows() != MIN_ROWS){
                 bundle.setAmountOfRows(bundle.getAmountOfRows()-1);
-                rowImage = new Image(numberTextures[bundle.getAmountOfRows()-4]);
-                rowImage.setScale(scaleX,scaleY);
-                rowImage.setPosition(xI,yI);
+                rowImage.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
             }
         }
 
         if(incRowsButton.handleUp(x,y)){
             if(bundle.getAmountOfRows() != MAX_ROWS){
                 bundle.setAmountOfRows(bundle.getAmountOfRows()+1);
-                rowImage = new Image(numberTextures[bundle.getAmountOfRows()-4]);
-                rowImage.setScale(scaleX,scaleY);
-                rowImage.setPosition(xI,yI);
+                rowImage.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
+            }
+        }
+
+        if(decSignsButton.handleUp(x,y)){
+            if(bundle.getAmountOfSigns() != MIN_SIGNS){
+                bundle.setAmountOfSigns(bundle.getAmountOfSigns()-1);
+                signImage.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
+            }
+        }
+
+        if(incSignsButton.handleUp(x,y)){
+            if(bundle.getAmountOfSigns() != MAX_SIGNS){
+                bundle.setAmountOfSigns(bundle.getAmountOfSigns()+1);
+                signImage.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
+            }
+        }
+
+        if(menuButton.handleUp(x,y)){
+            if(listener != null){
+                listener.changeState(Main.MAIN_MENU_STATE);
             }
         }
     }
@@ -154,7 +189,7 @@ public class SettingsState extends GameState {
     }
 
     @Override
-    protected void initTextures() {
+    public void initTextures() {
         playMusicChecked = new Texture("music2.png");
         playMusicUnchecked = new Texture("music1.png");
 
