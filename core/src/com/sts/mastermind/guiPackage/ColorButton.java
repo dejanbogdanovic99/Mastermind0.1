@@ -10,6 +10,7 @@ public class ColorButton {
 
     private float x;
     private float y;
+
     private final int textureCode;
 
     private float width;

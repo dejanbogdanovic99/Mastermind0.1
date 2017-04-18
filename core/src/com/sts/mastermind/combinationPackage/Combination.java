@@ -4,36 +4,36 @@ import com.sts.mastermind.gamePackage.PlayState;
 
 public class Combination {
 
-    private int [] colors;
+    private int [] signs;
 
     public Combination(int amount){
-        colors = new int[amount];
-        for(int i = 0; i < colors.length;i++){
-            colors[i] = PlayState.NO_SIGN;
+        signs = new int[amount];
+        for(int i = 0; i < signs.length;i++){
+            signs[i] = PlayState.NO_SIGN;
         }
     }
 
-    public int getColor(int i){
-        return colors[i];
+    public int getSign(int i){
+        return signs[i];
     }
 
-    public void setColor(int i, int color){
-        colors[i] = color;
+    public void setSign(int i, int sign){
+        signs[i] = sign;
     }
 
     public int size(){
-        return colors.length;
+        return signs.length;
     }
 
     public void reset(){
-        for(int i = 0; i < colors.length;i++){
-            colors[i] = PlayState.NO_SIGN;
+        for(int i = 0; i < signs.length;i++){
+            signs[i] = PlayState.NO_SIGN;
         }
     }
 
     public int getFirstEmpty(){
-        for(int i = 0; i < colors.length;i++){
-            if(colors[i] == PlayState.NO_SIGN){
+        for(int i = 0; i < signs.length;i++){
+            if(signs[i] == PlayState.NO_SIGN){
                 return i;
             }
         }

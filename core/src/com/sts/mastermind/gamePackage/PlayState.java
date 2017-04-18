@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
+import com.sts.mastermind.guiPackage.Button;
 import com.sts.mastermind.guiPackage.ColorButton;
+import com.sts.mastermind.guiPackage.CombinationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,15 @@ public class PlayState extends GameState {
     private Texture fullHit;
     private Texture halfHit;
 
+    private Texture menuUp;
+    private Texture menuDown;
+
+    private Texture newUp;
+    private Texture newDown;
+
+    private Texture checkUp;
+    private Texture checkDown;
+
     /**
      * kombinacija
      */
@@ -51,7 +62,13 @@ public class PlayState extends GameState {
      * tasteri za boje
      */
 
+    private CombinationView combinationView;
+
     private ColorButton [] colorButtons;
+
+    private Button menuButton;
+
+    private Button newButton;
     /**
      * broj boja
      */
@@ -80,10 +97,29 @@ public class PlayState extends GameState {
         super.init();
 
         initColorButtons();
+
+        float x = 200*scaleX;
+        float y = 100*scaleY;
+
+        menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
+
+        x = width - 200*scaleX;
+
+        newButton = new Button(newUp, newDown, x, y, scaleX, scaleY);
+
+        combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+        combinationView.setPosition(100, 900);
     }
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
+
+        menuButton.draw(batch, alpha);
+
+        newButton.draw(batch, alpha);
+
+        combinationView.draw(batch, alpha);
+
         for(int i = 0; i < bundle.getAmountOfSigns();i++){
             colorButtons[i].draw(batch, alpha);
         }
@@ -97,6 +133,10 @@ public class PlayState extends GameState {
 
     @Override
     public void touchDown(int x, int y) {
+
+        menuButton.handleDown(x,y);
+        newButton.handleDown(x,y);
+
         for(int i = 0;i < colorButtons.length;i++){
             if(i == GEAR_CODE){
                 if (colorButtons[i].isPressed(x, y) && enteredCombination.size() == signsToGuess){
@@ -130,7 +170,25 @@ public class PlayState extends GameState {
 
     @Override
     public void touchUp(int x, int y) {
+        if(menuButton.handleUp(x,y)){
+            if(listener != null){
+                listener.changeState(Main.MAIN_MENU_STATE);
+            }
+        }
 
+        if(newButton.handleUp(x,y)){
+
+        }
+
+        combinationView.handleInput(x,y);
+        for(int i = 0; i < bundle.getAmountOfSigns();i++){
+            if(colorButtons[i].isPressed(x,y)){
+                int index = combinationView.getCombination().getFirstEmpty();
+                if(index != -1){
+                    combinationView.setSign(index, signs[i], i);
+                }
+            }
+        }
     }
 
     @Override
@@ -166,6 +224,15 @@ public class PlayState extends GameState {
         fullHit = new Texture("full.png");
 
         halfHit = new Texture("half.png");
+
+        menuUp = new Texture("menu1.png");
+        menuDown = new Texture("menu2.png");
+
+        newUp = new Texture("new1.png");
+        newDown = new Texture("new2.png");
+
+        checkUp = new Texture("check1.png");
+        checkDown = new Texture("check2.png");
     }
 
     @Override
@@ -176,6 +243,15 @@ public class PlayState extends GameState {
         signBack.dispose();
         fullHit.dispose();
         halfHit.dispose();
+
+        menuUp.dispose();
+        menuDown.dispose();
+
+        newUp.dispose();
+        newDown.dispose();
+
+        checkUp.dispose();
+        checkDown.dispose();
     }
 
 
@@ -183,7 +259,7 @@ public class PlayState extends GameState {
         colorButtons = new ColorButton[8];
 
         float x = width / 9;
-        float y = 100*scaleY;
+        float y = 250*scaleY;
 
         colorButtons[CLUB_CODE] = new ColorButton(
                 signs[CLUB_CODE],
