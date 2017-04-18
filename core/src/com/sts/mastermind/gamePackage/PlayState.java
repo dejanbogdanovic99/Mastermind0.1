@@ -80,6 +80,8 @@ public class PlayState extends GameState {
     private PastView pastView;
 
     private CheckView checkView;
+
+    private float combinationY;
     /**
      * broj boja
      */
@@ -106,6 +108,8 @@ public class PlayState extends GameState {
         float x = 150*scaleX;
         float y = 100*scaleY;
 
+        combinationY = height - 180*scaleY;
+
         menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
 
         x = width - 150*scaleX;
@@ -117,7 +121,7 @@ public class PlayState extends GameState {
         checkButton = new Button(checkUp, checkDown, x, y, scaleX, scaleY);
 
         combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-        combinationView.setPosition(100, 900);
+        combinationView.setPosition(50*scaleX, combinationY);
 
         sv = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
         sv.setPosition(100, 700);
@@ -167,8 +171,11 @@ public class PlayState extends GameState {
 
         if(checkButton.handleUp(x,y)){
             checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, 6, 4 ,2);
-            checkView.setPosition(400,400);
+            checkView.setPosition(width-300*scaleX, combinationY + 35*scaleY);
             pastView.add(combinationView, checkView);
+            combinationY -= 150 * scaleY;
+            combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+            combinationView.setPosition(50*scaleX, combinationY);
         }
 
         if(newButton.handleUp(x,y)){
