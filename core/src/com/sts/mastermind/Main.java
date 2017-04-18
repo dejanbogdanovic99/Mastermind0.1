@@ -42,7 +42,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	private final float B_BG = 0.886f;
 
 
-	private final float alphaRatio = 1f;
+	private final float alphaRatio = 1.5f;
 	/**
 	 za pozadinsku animaciju
 	 */

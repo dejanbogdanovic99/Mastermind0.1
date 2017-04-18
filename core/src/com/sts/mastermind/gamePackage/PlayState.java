@@ -72,23 +72,18 @@ public class PlayState extends GameState {
     private Button menuButton;
 
     private Button newButton;
+
+    private Button checkButton;
     /**
      * broj boja
      */
-    private int signsToGuess = 5;
     /**
      * broj pokusaja
     */
-    private int attempts = 0;
-    private int maxAttempts = 6;
 
     /**
      * Uneta kombinacija
      */
-    private List<ColorButton> enteredCombination = new ArrayList<ColorButton>();
-    private List<Image> checkedCombinations = new ArrayList<Image>();
-
-
 
 
     public PlayState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
@@ -103,14 +98,18 @@ public class PlayState extends GameState {
 
         createCombination();
 
-        float x = 200*scaleX;
+        float x = 150*scaleX;
         float y = 100*scaleY;
 
         menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
 
-        x = width - 200*scaleX;
+        x = width - 150*scaleX;
 
         newButton = new Button(newUp, newDown, x, y, scaleX, scaleY);
+
+        x = width / 2;
+
+        checkButton = new Button(checkUp, checkDown, x, y, scaleX, scaleY);
 
         combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
         combinationView.setPosition(100, 900);
@@ -130,18 +129,14 @@ public class PlayState extends GameState {
 
         newButton.draw(batch, alpha);
 
+        checkButton.draw(batch, alpha);
+
         combinationView.draw(batch, alpha);
 
         sv.draw(batch,alpha);
 
         for(int i = 0; i < bundle.getAmountOfSigns();i++){
             colorButtons[i].draw(batch, alpha);
-        }
-        for(int i = 0; i < enteredCombination.size();i++){
-            enteredCombination.get(i).draw(batch, alpha);
-        }
-        for(int i = 0; i < checkedCombinations.size();i++){
-            checkedCombinations.get(i).draw(batch, alpha);
         }
     }
 
@@ -150,36 +145,8 @@ public class PlayState extends GameState {
 
         menuButton.handleDown(x,y);
         newButton.handleDown(x,y);
+        checkButton.handleDown(x,y);
 
-        for(int i = 0;i < colorButtons.length;i++){
-            if(i == GEAR_CODE){
-                if (colorButtons[i].isPressed(x, y) && enteredCombination.size() == signsToGuess){
-                    /**
-                     * Ovde treba da ide provera da li je tacna kombinacija
-                     */
-                    for(ColorButton button:enteredCombination){
-                        checkedCombinations.add(new Image(signs[button.getTextureCode()]));
-                        checkedCombinations.get(checkedCombinations.size()-1).setX(button.getX());
-                        checkedCombinations.get(checkedCombinations.size()-1).setY(button.getY());
-                        checkedCombinations.get(checkedCombinations.size()-1).setScale(scaleX,scaleY);
-                        attempts++;
-                    }
-                    for(ColorButton colorButton:enteredCombination){
-                        colorButton.dispose();
-                    }
-                    enteredCombination.clear();
-                }
-            }else if(colorButtons[i].isPressed(x, y) && enteredCombination.size() < signsToGuess)
-                enteredCombination.add(new ColorButton(signs[colorButtons[i].getTextureCode()],
-                        colorButtons[i].getTextureCode(),
-                        width / 12 + width / 12 * enteredCombination.size(),
-                        height * scaleY - height / 50 - (height / 50) * attempts,
-                        scaleX, scaleY));
-        }
-        if(enteredCombination.size()>0) {
-            if (enteredCombination.get(enteredCombination.size() - 1).isPressed(x, y))
-                enteredCombination.remove(enteredCombination.size() - 1);
-        }
     }
 
     @Override
@@ -190,8 +157,17 @@ public class PlayState extends GameState {
             }
         }
 
-        if(newButton.handleUp(x,y)){
+        if(checkButton.handleUp(x,y)){
 
+        }
+
+        if(newButton.handleUp(x,y)){
+            combinationView.getCombination().reset();
+            createCombination();
+            sv.getCombination().reset();
+            for(int i = 0; i < bundle.getAmountOfRows();i++){
+                sv.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+            }
         }
 
         combinationView.handleInput(x,y);
