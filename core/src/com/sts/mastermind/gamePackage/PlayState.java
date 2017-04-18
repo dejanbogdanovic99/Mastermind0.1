@@ -82,16 +82,6 @@ public class PlayState extends GameState {
     private CheckView checkView;
 
     private float combinationY;
-    /**
-     * broj boja
-     */
-    /**
-     * broj pokusaja
-    */
-
-    /**
-     * Uneta kombinacija
-     */
 
 
     public PlayState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
