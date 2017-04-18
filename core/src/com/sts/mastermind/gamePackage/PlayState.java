@@ -12,6 +12,7 @@ import com.sts.mastermind.guiPackage.CombinationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PlayState extends GameState {
 
@@ -56,13 +57,15 @@ public class PlayState extends GameState {
      * kombinacija
      */
 
-    private Combination combination;
+    private Combination secretCombination;
 
     /**
      * tasteri za boje
      */
 
     private CombinationView combinationView;
+
+    private CombinationView sv;
 
     private ColorButton [] colorButtons;
 
@@ -98,6 +101,8 @@ public class PlayState extends GameState {
 
         initColorButtons();
 
+        createCombination();
+
         float x = 200*scaleX;
         float y = 100*scaleY;
 
@@ -109,6 +114,13 @@ public class PlayState extends GameState {
 
         combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
         combinationView.setPosition(100, 900);
+
+        sv = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+        sv.setPosition(100, 700);
+
+        for(int i = 0; i < bundle.getAmountOfRows();i++){
+            sv.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+        }
     }
 
     @Override
@@ -119,6 +131,8 @@ public class PlayState extends GameState {
         newButton.draw(batch, alpha);
 
         combinationView.draw(batch, alpha);
+
+        sv.draw(batch,alpha);
 
         for(int i = 0; i < bundle.getAmountOfSigns();i++){
             colorButtons[i].draw(batch, alpha);
@@ -254,6 +268,29 @@ public class PlayState extends GameState {
         checkDown.dispose();
     }
 
+    private void createCombination(){
+
+        secretCombination = new Combination(bundle.getAmountOfRows());
+        Random random = new Random();
+
+        if(bundle.getRepeatSigns()){
+            for(int i = 0; i < bundle.getAmountOfRows();i++){
+                int sign = random.nextInt(bundle.getAmountOfSigns());
+                secretCombination.setSign(i,sign);
+            }
+        }else{
+            ArrayList <Integer> number = new ArrayList<Integer>();
+            for(int i = 0; i < bundle.getAmountOfSigns();i++){
+                number.add(i);
+            }
+
+            for(int i = 0; i < bundle.getAmountOfRows();i++){
+                int sign = random.nextInt(number.size());
+                secretCombination.setSign(i, number.get(sign));
+                number.remove(sign);
+            }
+        }
+    }
 
     private void initColorButtons(){
         colorButtons = new ColorButton[8];
