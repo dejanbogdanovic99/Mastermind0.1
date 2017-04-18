@@ -7,8 +7,10 @@ import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.guiPackage.Button;
+import com.sts.mastermind.guiPackage.CheckView;
 import com.sts.mastermind.guiPackage.ColorButton;
 import com.sts.mastermind.guiPackage.CombinationView;
+import com.sts.mastermind.guiPackage.PastView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +76,10 @@ public class PlayState extends GameState {
     private Button newButton;
 
     private Button checkButton;
+
+    private PastView pastView;
+
+    private CheckView checkView;
     /**
      * broj boja
      */
@@ -120,6 +126,8 @@ public class PlayState extends GameState {
         for(int i = 0; i < bundle.getAmountOfRows();i++){
             sv.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
         }
+
+        pastView = new PastView();
     }
 
     @Override
@@ -138,6 +146,7 @@ public class PlayState extends GameState {
         for(int i = 0; i < bundle.getAmountOfSigns();i++){
             colorButtons[i].draw(batch, alpha);
         }
+        pastView.draw(batch, alpha);
     }
 
     @Override
@@ -158,7 +167,9 @@ public class PlayState extends GameState {
         }
 
         if(checkButton.handleUp(x,y)){
-
+            checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, 6, 4 ,2);
+            checkView.setPossition(400,400);
+            pastView.add(combinationView, checkView);
         }
 
         if(newButton.handleUp(x,y)){
