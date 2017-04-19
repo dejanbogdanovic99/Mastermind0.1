@@ -205,6 +205,9 @@ public class PlayState extends GameState {
                         j++;
                     }
                 }
+
+                numberOfAttempts++;
+
                 if (full.size() == bundle.getAmountOfRows()){
                     won = true;
                     wonImage = new Image(wonTexture);
@@ -213,7 +216,9 @@ public class PlayState extends GameState {
                     endImage = new Image(endTexture);
                     endImage.setScale(scaleX, scaleY);
                     endImage.setPosition(0,0);
-                    sv.setPosition(90 * scaleX,height - 400 * scaleY);
+                    sv.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
+                                    10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
+                            height - 600 * scaleY);
                 }else if (numberOfAttempts == 10){
                     lost = true;
                     lostImage = new Image(lostTexture);
@@ -222,7 +227,9 @@ public class PlayState extends GameState {
                     endImage = new Image(endTexture);
                     endImage.setScale(scaleX, scaleY);
                     endImage.setPosition(0,0);
-                    sv.setPosition(90 * scaleX,height - 400 * scaleY);
+                    sv.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
+                                    10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
+                            height - 600 * scaleY);
                 }
 
                 checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfRows(), full.size(), half.size());
