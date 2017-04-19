@@ -110,6 +110,9 @@ public class PlayState extends GameState {
         float x = 150*scaleX;
         float y = 100*scaleY;
 
+        won = false;
+        lost = false;
+
         combinationY = height - 180*scaleY;
 
         menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
@@ -394,7 +397,7 @@ public class PlayState extends GameState {
     private void initColorButtons(){
         colorButtons = new ColorButton[8];
 
-        float x = width / 9;
+        float x = width / 9 + (8 - bundle.getAmountOfSigns()) * width/18;
         float y = 250*scaleY;
 
         colorButtons[CLUB_CODE] = new ColorButton(
