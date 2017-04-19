@@ -5,13 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by momci on 4/18/2017.
- */
 
 public class PastView {
     private List<CombinationView> pastCombinations;
-    private List<CheckView> pastChecks = new ArrayList<CheckView>();
+    private List<CheckView> pastChecks;
 
     public PastView(){
         pastCombinations = new ArrayList<CombinationView>();
@@ -29,5 +26,10 @@ public class PastView {
         for(int i = 0; i < pastChecks.size(); i++){
             pastChecks.get(i).draw(batch, alpha);
         }
+    }
+
+    public void reset(){
+        pastCombinations.clear();
+        pastChecks.clear();
     }
 }

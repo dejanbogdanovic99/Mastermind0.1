@@ -160,17 +160,44 @@ public class PlayState extends GameState {
         }
 
         if(checkButton.handleUp(x,y)){
-            checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, 6, 4 ,2);
-            checkView.setPosition(width-300*scaleX, combinationY + 35*scaleY);
-            pastView.add(combinationView, checkView);
-            combinationY -= 150 * scaleY;
-            combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-            combinationView.setPosition(50*scaleX, combinationY);
+            if(combinationView.getCombination().getFirstEmpty() == -1) {
+
+                ArrayList<Integer> full = new ArrayList<Integer>();
+                ArrayList<Integer> half = new ArrayList<Integer>();
+
+                for(int i = 0; i < bundle.getAmountOfRows();i++){
+                    if(combinationView.getCombination().getSign(i) == secretCombination.getSign(i)){
+                        full.add(i);
+                    }
+                }
+
+                for(int i = 0; i < bundle.getAmountOfRows();i++){
+                    int j = 0;
+                    boolean found = false;
+                    while(j < bundle.getAmountOfRows() && !found){
+                        if(combinationView.getCombination().getSign(i) == secretCombination.getSign(j) && !full.contains(i) && !full.contains(j) && !half.contains(j)){
+                            half.add(j);
+                            found = true;
+                        }
+                        j++;
+                    }
+                }
+
+                checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfRows(), full.size(), half.size());
+                checkView.setPosition(width - 300 * scaleX, combinationY + 35 * scaleY);
+                pastView.add(combinationView, checkView);
+                combinationY -= 150 * scaleY;
+                combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+                combinationView.setPosition(50 * scaleX, combinationY);
+            }
         }
 
         if(newButton.handleUp(x,y)){
-            combinationView.getCombination().reset();
+            combinationY = height - 180*scaleY;
+            combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+            combinationView.setPosition(50 * scaleX, combinationY);
             createCombination();
+            pastView.reset();
             sv.getCombination().reset();
             for(int i = 0; i < bundle.getAmountOfRows();i++){
                 sv.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
@@ -245,6 +272,34 @@ public class PlayState extends GameState {
 
         checkUp.dispose();
         checkDown.dispose();
+    }
+
+    private int checkFull(){
+        int amount = 0;
+        for(int i = 0; i < bundle.getAmountOfRows();i++){
+            if(combinationView.getCombination().getSign(i) == secretCombination.getSign(i)){
+                amount++;
+            }
+        }
+        return amount;
+    }
+
+    private int checkHalf(){
+        int amount = 0;
+        for(int i = 0; i < bundle.getAmountOfRows();i++){
+            if(combinationView.getCombination().getSign(i) != secretCombination.getSign(i)){
+                int j = 0;
+                boolean found = false;
+                while(j < bundle.getAmountOfRows() && !found){
+                    if(combinationView.getCombination().getSign(i) == secretCombination.getSign(j)){
+                        amount++;
+                        found = true;
+                    }
+                    j++;
+                }
+            }
+        }
+        return amount;
     }
 
     private void createCombination(){

@@ -9,6 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 
 public class CheckView {
+
+    private static final int OFFSET = 40;
+
     private Image[] full;
     private Image[] half;
     private int amount;
@@ -43,13 +46,13 @@ public class CheckView {
             if(full[i] != null){
                 full[i].setPosition(x, posY);
             }
-            x += 40*scaleX;
+            x += OFFSET*scaleX;
         }
         for(int i = 0; i < halfAmount ;i++){
             if(half[i] != null){
                 half[i].setPosition(x, posY);
             }
-            x += 40*scaleX;
+            x += OFFSET*scaleX;
         }
 
     }
