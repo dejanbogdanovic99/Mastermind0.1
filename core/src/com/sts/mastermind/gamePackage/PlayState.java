@@ -13,7 +13,6 @@ import com.sts.mastermind.guiPackage.CombinationView;
 import com.sts.mastermind.guiPackage.PastView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class PlayState extends GameState {
@@ -83,6 +82,19 @@ public class PlayState extends GameState {
 
     private float combinationY;
 
+    private boolean lost = false;
+    private Texture lostTexture;
+    private Image lostImage;
+
+    private boolean won = false;
+    private Texture wonTexture;
+    private Image wonImage;
+
+    private Texture endTexture;
+    private Image endImage;
+
+    private int numberOfAttempts = 0;
+
 
     public PlayState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
         super(bundle, scaleX, scaleY, width, height);
@@ -140,6 +152,17 @@ public class PlayState extends GameState {
             colorButtons[i].draw(batch, alpha);
         }
         pastView.draw(batch, alpha);
+
+        if(lost){
+            endImage.draw(batch, alpha);
+            lostImage.draw(batch, alpha);
+            sv.draw(batch, alpha);
+        }else if(won){
+            endImage.draw(batch, alpha);
+            wonImage.draw(batch, alpha);
+            sv.draw(batch, alpha);
+        }
+
     }
 
     @Override
@@ -182,6 +205,25 @@ public class PlayState extends GameState {
                         j++;
                     }
                 }
+                if (full.size() == bundle.getAmountOfRows()){
+                    won = true;
+                    wonImage = new Image(wonTexture);
+                    wonImage.setScale(scaleX, scaleY);
+                    wonImage.setPosition(90 * scaleX,height - 100 * scaleY - wonImage.getHeight());
+                    endImage = new Image(endTexture);
+                    endImage.setScale(scaleX, scaleY);
+                    endImage.setPosition(0,0);
+                    sv.setPosition(90 * scaleX,height - 400 * scaleY);
+                }else if (numberOfAttempts == 10){
+                    lost = true;
+                    lostImage = new Image(lostTexture);
+                    lostImage.setScale(scaleX, scaleY);
+                    lostImage.setPosition(90 * scaleX,height - 100 * scaleY - lostImage.getHeight());
+                    endImage = new Image(endTexture);
+                    endImage.setScale(scaleX, scaleY);
+                    endImage.setPosition(0,0);
+                    sv.setPosition(90 * scaleX,height - 400 * scaleY);
+                }
 
                 checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfRows(), full.size(), half.size());
                 checkView.setPosition(width - 300 * scaleX, combinationY + 35 * scaleY);
@@ -193,6 +235,11 @@ public class PlayState extends GameState {
         }
 
         if(newButton.handleUp(x,y)){
+            numberOfAttempts = 0;
+            lost = false;
+            lostImage = null;
+            won = false;
+            wonImage = null;
             combinationY = height - 180*scaleY;
             combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
             combinationView.setPosition(50 * scaleX, combinationY);
@@ -253,6 +300,13 @@ public class PlayState extends GameState {
 
         checkUp = new Texture("check1.png");
         checkDown = new Texture("check2.png");
+
+        lostTexture = new Texture("lost.png");
+        wonTexture = new Texture("win.png");
+
+        endTexture = new Texture("end.png");
+
+
     }
 
     @Override
@@ -272,6 +326,10 @@ public class PlayState extends GameState {
 
         checkUp.dispose();
         checkDown.dispose();
+
+        lostTexture.dispose();
+        wonTexture.dispose();
+        endTexture.dispose();
     }
 
     private int checkFull(){
