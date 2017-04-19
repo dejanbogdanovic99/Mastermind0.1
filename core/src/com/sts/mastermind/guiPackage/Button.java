@@ -42,6 +42,14 @@ public class Button {
 
     }
 
+    public void setPosition(float x, float y){
+        this.x = x - width/2;
+        this.y = y - height/2;
+
+        upImage.setPosition(this.x, this.y);
+        downImage.setPosition(this.x, this.y);
+    }
+
     public void handleDown(int x, int y){
         if(contains(x,y)){
             pressed = true;

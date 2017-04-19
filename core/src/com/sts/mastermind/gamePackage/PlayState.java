@@ -66,7 +66,7 @@ public class PlayState extends GameState {
 
     private CombinationView combinationView;
 
-    private CombinationView sv;
+    private CombinationView secretView;
 
     private ColorButton [] colorButtons;
 
@@ -128,11 +128,13 @@ public class PlayState extends GameState {
         combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
         combinationView.setPosition(50*scaleX, combinationY);
 
-        sv = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-        sv.setPosition(100, 700);
+        secretView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+        secretView.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
+                        10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
+                height - 450 * scaleY);
 
         for(int i = 0; i < bundle.getAmountOfRows();i++){
-            sv.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+            secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
         }
 
         pastView = new PastView();
@@ -141,15 +143,11 @@ public class PlayState extends GameState {
     @Override
     public void render(SpriteBatch batch, float alpha) {
 
-        menuButton.draw(batch, alpha);
-
-        newButton.draw(batch, alpha);
-
         checkButton.draw(batch, alpha);
 
         combinationView.draw(batch, alpha);
 
-        sv.draw(batch,alpha);
+        secretView.draw(batch,alpha);
 
         for(int i = 0; i < bundle.getAmountOfSigns();i++){
             colorButtons[i].draw(batch, alpha);
@@ -159,12 +157,16 @@ public class PlayState extends GameState {
         if(lost){
             endImage.draw(batch, alpha);
             lostImage.draw(batch, alpha);
-            sv.draw(batch, alpha);
+            secretView.draw(batch, alpha);
         }else if(won){
             endImage.draw(batch, alpha);
             wonImage.draw(batch, alpha);
-            sv.draw(batch, alpha);
+            secretView.draw(batch, alpha);
         }
+
+        menuButton.draw(batch, alpha);
+
+        newButton.draw(batch, alpha);
 
     }
 
@@ -173,7 +175,9 @@ public class PlayState extends GameState {
 
         menuButton.handleDown(x,y);
         newButton.handleDown(x,y);
-        checkButton.handleDown(x,y);
+        if(!won && !lost){
+            checkButton.handleDown(x,y);
+        }
 
     }
 
@@ -215,24 +219,29 @@ public class PlayState extends GameState {
                     won = true;
                     wonImage = new Image(wonTexture);
                     wonImage.setScale(scaleX, scaleY);
-                    wonImage.setPosition(90 * scaleX,height - 100 * scaleY - wonImage.getHeight());
+                    wonImage.setPosition(90 * scaleX,height - (100+ wonImage.getHeight()) * scaleY);
                     endImage = new Image(endTexture);
                     endImage.setScale(scaleX, scaleY);
                     endImage.setPosition(0,0);
-                    sv.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
+                    /*secretView.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
                                     10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
-                            height - 600 * scaleY);
+                            height - 450 * scaleY);*/
+                    menuButton.setPosition(300*scaleX, height - 650*scaleY);
+                    newButton.setPosition(width - 300*scaleX, height - 650*scaleY);
+
                 }else if (numberOfAttempts == 10){
                     lost = true;
                     lostImage = new Image(lostTexture);
                     lostImage.setScale(scaleX, scaleY);
-                    lostImage.setPosition(90 * scaleX,height - 100 * scaleY - lostImage.getHeight());
+                    lostImage.setPosition(90 * scaleX,height - (100+ lostImage.getHeight()) * scaleY);
                     endImage = new Image(endTexture);
                     endImage.setScale(scaleX, scaleY);
                     endImage.setPosition(0,0);
-                    sv.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
+                   /* secretView.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
                                     10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
-                            height - 600 * scaleY);
+                            height - 450 * scaleY);*/
+                    menuButton.setPosition(300*scaleX, height - 650*scaleY);
+                    newButton.setPosition(width - 300*scaleX, height - 650*scaleY);
                 }
 
                 checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfRows(), full.size(), half.size());
@@ -240,7 +249,16 @@ public class PlayState extends GameState {
                 pastView.add(combinationView, checkView);
                 combinationY -= 150 * scaleY;
                 combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+
+                /*
+                da sklonim combination view ako se ne gadja vise
+
+                 */
+
                 combinationView.setPosition(50 * scaleX, combinationY);
+                if(won || lost){
+                    combinationView.setPosition(50 * scaleX, -1000);
+                }
             }
         }
 
@@ -255,10 +273,13 @@ public class PlayState extends GameState {
             combinationView.setPosition(50 * scaleX, combinationY);
             createCombination();
             pastView.reset();
-            sv.getCombination().reset();
+            secretView.getCombination().reset();
             for(int i = 0; i < bundle.getAmountOfRows();i++){
-                sv.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+                secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
             }
+
+            menuButton.setPosition(150*scaleX, 100*scaleY);
+            newButton.setPosition(width - 150*scaleX, 100*scaleY);
         }
 
         combinationView.handleInput(x,y);
@@ -342,34 +363,6 @@ public class PlayState extends GameState {
         endTexture.dispose();
     }
 
-    private int checkFull(){
-        int amount = 0;
-        for(int i = 0; i < bundle.getAmountOfRows();i++){
-            if(combinationView.getCombination().getSign(i) == secretCombination.getSign(i)){
-                amount++;
-            }
-        }
-        return amount;
-    }
-
-    private int checkHalf(){
-        int amount = 0;
-        for(int i = 0; i < bundle.getAmountOfRows();i++){
-            if(combinationView.getCombination().getSign(i) != secretCombination.getSign(i)){
-                int j = 0;
-                boolean found = false;
-                while(j < bundle.getAmountOfRows() && !found){
-                    if(combinationView.getCombination().getSign(i) == secretCombination.getSign(j)){
-                        amount++;
-                        found = true;
-                    }
-                    j++;
-                }
-            }
-        }
-        return amount;
-    }
-
     private void createCombination(){
 
         secretCombination = new Combination(bundle.getAmountOfRows());
@@ -397,8 +390,8 @@ public class PlayState extends GameState {
     private void initColorButtons(){
         colorButtons = new ColorButton[8];
 
-        float x = width / 9 + (8 - bundle.getAmountOfSigns()) * width/18;
-        float y = 250*scaleY;
+        float x = width / (bundle.getAmountOfSigns() +1);
+        float y = 280*scaleY;
 
         colorButtons[CLUB_CODE] = new ColorButton(
                 signs[CLUB_CODE],
@@ -409,7 +402,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 9;
+        x += width / (bundle.getAmountOfSigns() +1);
 
         colorButtons[SPADES_CODE] = new ColorButton(
                 signs[SPADES_CODE],
@@ -420,7 +413,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 9;
+        x += width / (bundle.getAmountOfSigns() +1);
 
         colorButtons[HEART_CODE] = new ColorButton(
                 signs[HEART_CODE],
@@ -431,7 +424,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 9;
+        x += width / (bundle.getAmountOfSigns() +1);
 
         colorButtons[DIAMOND_CODE] = new ColorButton(
                 signs[DIAMOND_CODE],
@@ -442,7 +435,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 9;
+        x += width / (bundle.getAmountOfSigns() +1);
 
         colorButtons[BULB_CODE] = new ColorButton(
                 signs[BULB_CODE],
@@ -453,7 +446,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 9;
+        x += width / (bundle.getAmountOfSigns() +1);
 
         colorButtons[STAR_CODE] = new ColorButton(
                 signs[STAR_CODE],
@@ -464,7 +457,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 9;
+        x += width / (bundle.getAmountOfSigns() +1);
 
         colorButtons[FLOWER_CODE] = new ColorButton(
                 signs[FLOWER_CODE],
@@ -475,7 +468,7 @@ public class PlayState extends GameState {
                 scaleY
         );
 
-        x += width / 9;
+        x += width / (bundle.getAmountOfSigns() +1);
 
         colorButtons[GEAR_CODE] = new ColorButton(
                 signs[GEAR_CODE],
