@@ -147,7 +147,7 @@ public class PlayState extends GameState {
 
         combinationView.draw(batch, alpha);
 
-        secretView.draw(batch,alpha);
+       // secretView.draw(batch,alpha);
 
         for(int i = 0; i < bundle.getAmountOfSigns();i++){
             colorButtons[i].draw(batch, alpha);
@@ -223,9 +223,6 @@ public class PlayState extends GameState {
                     endImage = new Image(endTexture);
                     endImage.setScale(scaleX, scaleY);
                     endImage.setPosition(0,0);
-                    /*secretView.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
-                                    10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
-                            height - 450 * scaleY);*/
                     menuButton.setPosition(300*scaleX, height - 650*scaleY);
                     newButton.setPosition(width - 300*scaleX, height - 650*scaleY);
 
@@ -237,9 +234,6 @@ public class PlayState extends GameState {
                     endImage = new Image(endTexture);
                     endImage.setScale(scaleX, scaleY);
                     endImage.setPosition(0,0);
-                   /* secretView.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
-                                    10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
-                            height - 450 * scaleY);*/
                     menuButton.setPosition(300*scaleX, height - 650*scaleY);
                     newButton.setPosition(width - 300*scaleX, height - 650*scaleY);
                 }
