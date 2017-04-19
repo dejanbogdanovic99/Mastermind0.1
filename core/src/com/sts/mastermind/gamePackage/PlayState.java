@@ -93,7 +93,7 @@ public class PlayState extends GameState {
     private Texture endTexture;
     private Image endImage;
 
-    private int numberOfAttempts = 0;
+    private int numberOfAttempts;
 
 
     public PlayState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
@@ -112,6 +112,8 @@ public class PlayState extends GameState {
 
         won = false;
         lost = false;
+
+        numberOfAttempts = 0;
 
         combinationY = height - 180*scaleY;
 
