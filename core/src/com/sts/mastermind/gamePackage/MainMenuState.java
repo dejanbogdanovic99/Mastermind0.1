@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
+import com.sts.mastermind.guiPackage.BasicImage;
 import com.sts.mastermind.guiPackage.Button;
 
 public class MainMenuState extends GameState {
-
-    private static final int OFFSET = 60;
 
     /*
         Sve texutre za meni
@@ -41,7 +40,7 @@ public class MainMenuState extends GameState {
         slika logoa
      */
 
-    private Image logoImage;
+    private BasicImage logoImage;
 
     /*
         objekat interfejsa, za promenu stanja
@@ -59,25 +58,26 @@ public class MainMenuState extends GameState {
     @Override
     public void init() {
 
-        float x = (width / 2) - scaleX*logoTexture.getWidth()/2;
-        float y = height - scaleY*logoTexture.getHeight();
+        float x = (width / 2);
+        float y = height - scaleY*450;
 
-        logoImage = new Image(logoTexture);
+        // pozicija logo slike je na standardnom ekranu sredina i 400 od gore
 
-        logoImage.setScale(scaleX,scaleY);
-        logoImage.setPosition(x,y);
+        logoImage = new BasicImage(logoTexture, x,y, scaleX*0.7f, scaleY*0.7f);
 
-        x = width /2;
-        y -= OFFSET*scaleY;
+        y = height - scaleY*920;
 
+        // pozicija play tastera je na standardnom ekranu sredina i 920 od gore
         play = new Button(playUp, playDown, x, y, scaleX, scaleY);
 
-        y -= (OFFSET*scaleY+playUp.getHeight()*scaleY);
+        y = height - scaleY*1170;
 
+        // pozicija settings tastera je na standardnom ekranu sredina i 1170 od gore
         settings = new Button(settingsUp, settingsDown, x, y, scaleX, scaleY);
 
-        y -= (OFFSET*scaleY+settingsUp.getHeight()*scaleY);
+        y = height - scaleY*1420;
 
+        // pozicija exit tastera je na standardnom ekranu sredina i 1420 od gore
         exit = new Button(exitUp, exitDown, x, y, scaleX, scaleY);
     }
 
