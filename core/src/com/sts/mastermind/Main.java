@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,8 +17,9 @@ import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.gamePackage.PlayState;
 import com.sts.mastermind.gamePackage.SettingsState;
 import com.sts.mastermind.listenerPackage.ChangeState;
+import com.sts.mastermind.listenerPackage.MusicManager;
 
-public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
+public class Main extends ApplicationAdapter implements InputProcessor, ChangeState, MusicManager{
 
 	/**
 	 Konstante za delove igre
@@ -85,6 +87,12 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	 */
 
 	private DataBundle bundle;
+
+	/**
+	 * muzika
+	 */
+
+	private Music bgMusic;
 
 	/**
 	 scale slika
@@ -162,6 +170,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[SETTINGS_STATE].initTextures();
 
 		stateOfGame[SETTINGS_STATE].setChangeListener(this);
+		((SettingsState)stateOfGame[SETTINGS_STATE]).setMusicManager(this);
 
 		ready = true;
 
@@ -171,6 +180,11 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		lineImage.setScale(scaleX, scaleY);
 		lineImage.setX(-1108*scaleX);
 		lineImage.setY(-scaleY*lineImage.getHeight());
+
+		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("Background Music.mp3"));
+		if(bundle.getVolume()){
+			bgMusic.play();
+		}
 
 		Gdx.input.setInputProcessor(this);
 
@@ -228,6 +242,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[SETTINGS_STATE].dispose();
 
 		batch.dispose();
+		bgMusic.stop();
+		bgMusic.dispose();
 	}
 
 	private void initTextures(){
@@ -249,6 +265,16 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 				ready = true;
 			}
 		}).start();
+	}
+
+	@Override
+	public void playMusic() {
+		bgMusic.play();
+	}
+
+	@Override
+	public void stopMusic() {
+		bgMusic.stop();
 	}
 
 	@Override

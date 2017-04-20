@@ -8,6 +8,7 @@ import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.guiPackage.BasicImage;
 import com.sts.mastermind.guiPackage.Button;
 import com.sts.mastermind.guiPackage.CheckButton;
+import com.sts.mastermind.listenerPackage.MusicManager;
 
 public class SettingsState extends GameState {
 
@@ -56,8 +57,16 @@ public class SettingsState extends GameState {
     private CheckButton repeatSignsButton;
 
 
+
+    private MusicManager musicManager = null;
+
+
     public SettingsState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
         super(bundle, scaleX, scaleY, width, height);
+    }
+
+    public void setMusicManager(MusicManager musicManager){
+        this.musicManager = musicManager;
     }
 
     @Override
@@ -152,6 +161,11 @@ public class SettingsState extends GameState {
     public void touchUp(int x, int y) {
         if(musicButton.handleUp(x,y)){
             bundle.setVolume(musicButton.isChecked());
+            if(musicButton.isChecked()){
+                musicManager.playMusic();
+            }else{
+                musicManager.stopMusic();
+            }
         }
         if(repeatSignsButton.handleUp(x,y)){
             bundle.setRepeatSigns(repeatSignsButton.isChecked());
