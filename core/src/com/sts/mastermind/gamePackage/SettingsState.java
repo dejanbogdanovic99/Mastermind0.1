@@ -25,6 +25,9 @@ public class SettingsState extends GameState {
     private Texture repeatSignsChecked;
     private Texture repeatSignsUnchecked;
 
+    private Texture signTexture;
+    private Texture columnTexture;
+
     private Texture incUp;
     private Texture incDown;
 
@@ -41,6 +44,9 @@ public class SettingsState extends GameState {
     private Button decSignsButton;
 
     private Button menuButton;
+
+    private BasicImage rowNumber;
+    private BasicImage signNumber;
 
     private BasicImage rowImage;
     private BasicImage signImage;
@@ -79,21 +85,27 @@ public class SettingsState extends GameState {
 
         x = width / 2;
 
-        rowImage = new BasicImage(numberTextures[bundle.getAmountOfRows()-4], x, y, scaleX, scaleY);
+        rowNumber = new BasicImage(numberTextures[bundle.getAmountOfRows()-4], x, y, scaleX, scaleY);
 
         y -= scaleY*OFFSET;
 
-        x += scaleX*OFFSET/2;
+        x = width/2 - 200*scaleX;
+
+        signImage = new BasicImage(signTexture, x, y, scaleX , scaleY);
+
+        x = width/2 + 325*scaleX;
 
         incSignsButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
 
-        x -= scaleX*OFFSET;
+        x = width/2 + 75*scaleX;
 
         decSignsButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
 
-        x = width / 2;
+        x = width/2 + 200*scaleX;
 
-        signImage = new BasicImage(numberTextures[bundle.getAmountOfSigns()-4], x, y, scaleX, scaleY);
+        signNumber = new BasicImage(numberTextures[bundle.getAmountOfSigns()-4], x, y, scaleX, scaleY);
+
+        x = width / 2;
 
         y -= scaleY*OFFSET;
 
@@ -107,11 +119,12 @@ public class SettingsState extends GameState {
 
         incRowsButton.draw(batch, alpha);
         decRowsButton.draw(batch, alpha);
-        rowImage.draw(batch,alpha);
+        rowNumber.draw(batch,alpha);
 
+        signImage.draw(batch,alpha);
         incSignsButton.draw(batch,alpha);
         decSignsButton.draw(batch,alpha);
-        signImage.draw(batch,alpha);
+        signNumber.draw(batch,alpha);
 
         menuButton.draw(batch, alpha);
     }
@@ -143,28 +156,28 @@ public class SettingsState extends GameState {
         if(decRowsButton.handleUp(x,y)){
             if(bundle.getAmountOfRows() != MIN_ROWS){
                 bundle.setAmountOfRows(bundle.getAmountOfRows()-1);
-                rowImage.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
+                rowNumber.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
             }
         }
 
         if(incRowsButton.handleUp(x,y)){
             if(bundle.getAmountOfRows() != MAX_ROWS){
                 bundle.setAmountOfRows(bundle.getAmountOfRows()+1);
-                rowImage.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
+                rowNumber.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
             }
         }
 
         if(decSignsButton.handleUp(x,y)){
             if(bundle.getAmountOfSigns() != MIN_SIGNS){
                 bundle.setAmountOfSigns(bundle.getAmountOfSigns()-1);
-                signImage.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
+                signNumber.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
             }
         }
 
         if(incSignsButton.handleUp(x,y)){
             if(bundle.getAmountOfSigns() != MAX_SIGNS){
                 bundle.setAmountOfSigns(bundle.getAmountOfSigns()+1);
-                signImage.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
+                signNumber.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
             }
         }
 
@@ -210,6 +223,9 @@ public class SettingsState extends GameState {
         menuUp = new Texture("menu1.png");
         menuDown = new Texture("menu2.png");
 
+        signTexture = new Texture("signs.png");
+        //columnTexture = new Texture("");
+
     }
 
     @Override
@@ -233,6 +249,8 @@ public class SettingsState extends GameState {
         menuUp.dispose();
         menuDown.dispose();
 
+        signTexture.dispose();
+        //columnTexture.dispose();
     }
 
 
