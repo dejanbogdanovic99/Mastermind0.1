@@ -39,9 +39,9 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 	private final int AMOUNT_OF_STATES = 3;
 
-	private final float R_BG = 0.886f;
-	private final float G_BG = 0.886f;
-	private final float B_BG = 0.886f;
+	private final float R_BG[] = new float[]{0.996f,0.827f,0.886f,0.996f,0.863f};
+	private final float G_BG[] = new float[]{0.827f,0.878f,0.886f,0.933f,0.996f};
+	private final float B_BG[] = new float[]{0.827f,0.996f,0.886f,0.827f,0.827f};
 
 
 	private final float alphaRatio = 1.5f;
@@ -194,7 +194,10 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	@Override
 	public void render(){
 
-		Gdx.gl.glClearColor(R_BG, G_BG, B_BG, 1);
+		Gdx.gl.glClearColor(R_BG[bundle.getBgColor()],
+				G_BG[bundle.getBgColor()],
+				B_BG[bundle.getBgColor()],
+				1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		float delta = Gdx.graphics.getDeltaTime(); // 0.016

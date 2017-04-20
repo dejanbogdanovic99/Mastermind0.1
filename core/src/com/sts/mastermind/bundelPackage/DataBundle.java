@@ -25,6 +25,12 @@ public class DataBundle {
 
     private int amountOfSigns;
 
+    /*
+        boja pozadine
+     */
+
+    private int bgColor = 2;
+
 
     public DataBundle(boolean volume,
                       boolean repeatSigns,
@@ -66,5 +72,13 @@ public class DataBundle {
 
     public void setAmountOfSigns(int amountOfSigns) {
         this.amountOfSigns = amountOfSigns;
+    }
+
+    public int getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(int bgColor) {
+        this.bgColor = bgColor;
     }
 }

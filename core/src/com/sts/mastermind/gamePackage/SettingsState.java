@@ -38,6 +38,11 @@ public class SettingsState extends GameState {
     private Texture menuUp;
     private Texture menuDown;
 
+    private Texture[] bgColors;
+
+    private Button incColorButton;
+    private Button decColorButton;
+
     private Button incRowsButton;
     private Button decRowsButton;
 
@@ -51,6 +56,8 @@ public class SettingsState extends GameState {
 
     private BasicImage rowImage;
     private BasicImage signImage;
+
+    private BasicImage colorImage;
 
     private CheckButton musicButton;
 
@@ -122,7 +129,22 @@ public class SettingsState extends GameState {
 
         y -= scaleY*OFFSET;
 
+        colorImage = new BasicImage(bgColors[2],x,y,scaleX,scaleY);
+
+        x = width/2 - 171*scaleX;
+
+        decColorButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
+
+        x = width/2 + 171*scaleX;
+
+        incColorButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
+
+        x = width / 2;
+
+        y -= scaleY*OFFSET;
+
         menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
+
     }
 
     @Override
@@ -141,6 +163,10 @@ public class SettingsState extends GameState {
         signNumber.draw(batch,alpha);
 
         menuButton.draw(batch, alpha);
+
+        colorImage.draw(batch, alpha);
+        incColorButton.draw(batch, alpha);
+        decColorButton.draw(batch, alpha);
     }
 
     @Override
@@ -150,6 +176,8 @@ public class SettingsState extends GameState {
         incSignsButton.handleDown(x,y);
         decSignsButton.handleDown(x,y);
         menuButton.handleDown(x,y);
+        incColorButton.handleUp(x, y);
+        decColorButton.handleUp(x, y);
     }
 
     @Override
@@ -199,6 +227,18 @@ public class SettingsState extends GameState {
                 signNumber.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
             }
         }
+        if(incColorButton.handleUp(x, y)){
+            if(bundle.getBgColor() < 4){
+                bundle.setBgColor(bundle.getBgColor()+1);
+                colorImage.setTexture(bgColors[bundle.getBgColor()]);
+            }
+        }
+        if(decColorButton.handleUp(x, y)){
+            if(bundle.getBgColor() > 0){
+                bundle.setBgColor(bundle.getBgColor()-1);
+                colorImage.setTexture(bgColors[bundle.getBgColor()]);
+            }
+        }
 
         if(menuButton.handleUp(x,y)){
             if(listener != null){
@@ -244,6 +284,13 @@ public class SettingsState extends GameState {
 
         signTexture = new Texture("signs.png");
         columnTexture = new Texture("columns.png");
+
+        bgColors = new Texture[5];
+        bgColors[0] = new Texture("bgRed.png");
+        bgColors[1] = new Texture("bgBlue.png");
+        bgColors[2] = new Texture("bgGrey.png");
+        bgColors[3] = new Texture("bgYellow.png");
+        bgColors[4] = new Texture("bgGreen.png");
 
     }
 
