@@ -328,7 +328,7 @@ public class PlayState extends GameState {
         checkUp = new Texture("check1.png");
         checkDown = new Texture("check2.png");
 
-        lostTexture = new Texture("lost.png");
+        lostTexture = new Texture("lose.png");
         wonTexture = new Texture("win.png");
 
         endTexture = new Texture("end.png");

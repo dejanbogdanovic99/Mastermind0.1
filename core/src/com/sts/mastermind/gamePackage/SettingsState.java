@@ -201,8 +201,8 @@ public class SettingsState extends GameState {
             numberTextures[i] = new Texture(Integer.toString(i+4)+".png");
         }
 
-        incUp = new Texture("1r.png");
-        incDown = new Texture("2r.png");
+        incUp = new Texture("r1.png");
+        incDown = new Texture("r2.png");
 
         decUp = new Texture("1.png");
         decDown = new Texture("2.png");
