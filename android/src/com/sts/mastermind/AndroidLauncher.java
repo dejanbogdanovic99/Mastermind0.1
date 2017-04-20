@@ -49,16 +49,16 @@ public class AndroidLauncher extends AndroidApplication {
 
 
 			bundle = new DataBundle(
-					file.getBoolean(VOLUME_PASS, false),
-					file.getBoolean(REPEAT_SIGNS_PASS, false),
+					file.getBoolean(VOLUME_PASS, true),
+					file.getBoolean(REPEAT_SIGNS_PASS, true),
 					file.getInt(AMOUNT_OF_ROWS_PASS, 4),
 					file.getInt(AMOUNT_OF_SIGNS_PASS, 6)
 			);
 
 		}catch(Exception e){
 			bundle = new DataBundle(
-					false,
-					false,
+					true,
+					true,
 					4,
 					6
 			);

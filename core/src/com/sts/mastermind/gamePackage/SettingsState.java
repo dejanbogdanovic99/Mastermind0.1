@@ -75,15 +75,19 @@ public class SettingsState extends GameState {
 
         y -= scaleY*OFFSET;
 
-        x += scaleX*OFFSET/2;
+        x = width/2 - 200*scaleX;
+
+        rowImage = new BasicImage(columnTexture, x , y , scaleX, scaleY);
+
+        x = width/2 + 325*scaleX;
 
         incRowsButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
 
-        x-= scaleX*OFFSET;
+        x = width/2 + 75*scaleX;
 
         decRowsButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
 
-        x = width / 2;
+        x = width/2 + 200*scaleX;
 
         rowNumber = new BasicImage(numberTextures[bundle.getAmountOfRows()-4], x, y, scaleX, scaleY);
 
@@ -117,6 +121,7 @@ public class SettingsState extends GameState {
         musicButton.draw(batch, alpha);
         repeatSignsButton.draw(batch, alpha);
 
+        rowImage.draw(batch, alpha);
         incRowsButton.draw(batch, alpha);
         decRowsButton.draw(batch, alpha);
         rowNumber.draw(batch,alpha);
@@ -224,7 +229,7 @@ public class SettingsState extends GameState {
         menuDown = new Texture("menu2.png");
 
         signTexture = new Texture("signs.png");
-        //columnTexture = new Texture("");
+        columnTexture = new Texture("columns.png");
 
     }
 
@@ -250,7 +255,7 @@ public class SettingsState extends GameState {
         menuDown.dispose();
 
         signTexture.dispose();
-        //columnTexture.dispose();
+        columnTexture.dispose();
     }
 
 
