@@ -182,6 +182,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		lineImage.setY(-scaleY*lineImage.getHeight());
 
 		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("Background Music.mp3"));
+		bgMusic.setLooping(true);
 		if(bundle.getVolume()){
 			bgMusic.play();
 		}
