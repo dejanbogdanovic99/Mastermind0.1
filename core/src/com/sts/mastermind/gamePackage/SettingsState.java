@@ -17,6 +17,8 @@ public class SettingsState extends GameState {
     private final int MAX_ROWS = 6;
     private final int MIN_SIGNS = 6;
     private final int MAX_SIGNS = 8;
+    private final int MAX_BGCOLOR = 4;
+    private final int MIN_BGCOLOR = 0;
 
     private Texture [] numberTextures;
 
@@ -129,7 +131,7 @@ public class SettingsState extends GameState {
 
         y -= scaleY*OFFSET;
 
-        colorImage = new BasicImage(bgColors[2],x,y,scaleX,scaleY);
+        colorImage = new BasicImage(bgColors[bundle.getBgColor()],x,y,scaleX,scaleY);
 
         x = width/2 - 171*scaleX;
 
@@ -228,13 +230,13 @@ public class SettingsState extends GameState {
             }
         }
         if(incColorButton.handleUp(x, y)){
-            if(bundle.getBgColor() < 4){
+            if(bundle.getBgColor() != MAX_BGCOLOR){
                 bundle.setBgColor(bundle.getBgColor()+1);
                 colorImage.setTexture(bgColors[bundle.getBgColor()]);
             }
         }
         if(decColorButton.handleUp(x, y)){
-            if(bundle.getBgColor() > 0){
+            if(bundle.getBgColor() != MIN_BGCOLOR){
                 bundle.setBgColor(bundle.getBgColor()-1);
                 colorImage.setTexture(bgColors[bundle.getBgColor()]);
             }
@@ -286,11 +288,11 @@ public class SettingsState extends GameState {
         columnTexture = new Texture("columns.png");
 
         bgColors = new Texture[5];
-        bgColors[0] = new Texture("bgRed.png");
-        bgColors[1] = new Texture("bgBlue.png");
-        bgColors[2] = new Texture("bgGrey.png");
-        bgColors[3] = new Texture("bgYellow.png");
-        bgColors[4] = new Texture("bgGreen.png");
+        bgColors[0] = new Texture("red.png");
+        bgColors[1] = new Texture("blue.png");
+        bgColors[2] = new Texture("white.png");
+        bgColors[3] = new Texture("yellow.png");
+        bgColors[4] = new Texture("green.png");
 
     }
 

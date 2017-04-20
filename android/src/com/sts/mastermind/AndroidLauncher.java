@@ -17,6 +17,7 @@ public class AndroidLauncher extends AndroidApplication {
 	private static final String REPEAT_SIGNS_PASS = "repeatSigns";
 	private static final String AMOUNT_OF_ROWS_PASS = "amountOfRows";
 	private static final String AMOUNT_OF_SIGNS_PASS = "amountOfSigns";
+	private static final String BG_COLOR_PASS = "bgColor";
 
 	private DataBundle bundle;
 
@@ -52,7 +53,8 @@ public class AndroidLauncher extends AndroidApplication {
 					file.getBoolean(VOLUME_PASS, true),
 					file.getBoolean(REPEAT_SIGNS_PASS, true),
 					file.getInt(AMOUNT_OF_ROWS_PASS, 4),
-					file.getInt(AMOUNT_OF_SIGNS_PASS, 6)
+					file.getInt(AMOUNT_OF_SIGNS_PASS, 6),
+					file.getInt(BG_COLOR_PASS, 2)
 			);
 
 		}catch(Exception e){
@@ -60,7 +62,8 @@ public class AndroidLauncher extends AndroidApplication {
 					true,
 					true,
 					4,
-					6
+					6,
+					2
 			);
 		}
 	}
@@ -80,6 +83,7 @@ public class AndroidLauncher extends AndroidApplication {
 			editor.putBoolean(REPEAT_SIGNS_PASS, bundle.getRepeatSigns());
 			editor.putInt(AMOUNT_OF_ROWS_PASS, bundle.getAmountOfRows());
 			editor.putInt(AMOUNT_OF_SIGNS_PASS, bundle.getAmountOfSigns());
+			editor.putInt(BG_COLOR_PASS, bundle.getBgColor());
 
 			editor.apply();
 

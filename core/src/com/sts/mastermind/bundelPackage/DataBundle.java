@@ -29,17 +29,19 @@ public class DataBundle {
         boja pozadine
      */
 
-    private int bgColor = 2;
+    private int bgColor ;
 
 
     public DataBundle(boolean volume,
                       boolean repeatSigns,
                       int amountOfRows,
-                      int amountOfSigns) {
+                      int amountOfSigns,
+                      int bgColor) {
         this.volume = volume;
         this.repeatSigns = repeatSigns;
         this.amountOfRows = amountOfRows;
         this.amountOfSigns = amountOfSigns;
+        this.bgColor = bgColor;
     }
 
     public boolean getVolume() {
@@ -58,6 +60,10 @@ public class DataBundle {
         return amountOfSigns;
     }
 
+    public int getBgColor() {
+        return bgColor;
+    }
+
     public void setVolume(boolean volume) {
         this.volume = volume;
     }
@@ -72,10 +78,6 @@ public class DataBundle {
 
     public void setAmountOfSigns(int amountOfSigns) {
         this.amountOfSigns = amountOfSigns;
-    }
-
-    public int getBgColor() {
-        return bgColor;
     }
 
     public void setBgColor(int bgColor) {
