@@ -27,6 +27,9 @@ public class AndroidLauncher extends AndroidApplication {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
+		//sklanjanje tastera
+		config.useImmersiveMode = true;
+
 		loadConfig();
 
 		Main game = new Main(bundle);

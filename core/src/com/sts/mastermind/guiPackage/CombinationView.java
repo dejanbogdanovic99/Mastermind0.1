@@ -61,12 +61,15 @@ public class CombinationView {
         combination.setSign(i, code);
     }
 
-    public void handleInput(int x, int y){
+    public boolean handleInput(int x, int y){
+        boolean p = false;
         for(int i = 0; i < combination.size();i++){
             if(isBackPressed(x,y,i)){
                 combination.setSign(i,PlayState.NO_SIGN);
+                p = true;
             }
         }
+        return p;
     }
 
     public void draw(SpriteBatch batch, float alpha){

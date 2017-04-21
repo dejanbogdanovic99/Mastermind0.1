@@ -65,17 +65,17 @@ public class MainMenuState extends GameState {
 
         logoImage = new BasicImage(logoTexture, x,y, scaleX*0.7f, scaleY*0.7f);
 
-        y = height - scaleY*920;
+        y = height - scaleY*1070;
 
         // pozicija play tastera je na standardnom ekranu sredina i 920 od gore
         play = new Button(playUp, playDown, x, y, scaleX, scaleY);
 
-        y = height - scaleY*1170;
+        y = height - scaleY*1320;
 
         // pozicija settings tastera je na standardnom ekranu sredina i 1170 od gore
         settings = new Button(settingsUp, settingsDown, x, y, scaleX, scaleY);
 
-        y = height - scaleY*1420;
+        y = height - scaleY*1570;
 
         // pozicija exit tastera je na standardnom ekranu sredina i 1420 od gore
         exit = new Button(exitUp, exitDown, x, y, scaleX, scaleY);
@@ -100,11 +100,13 @@ public class MainMenuState extends GameState {
     public void touchUp(int x, int y) {
         if(play.handleUp(x,y)){
             if(listener != null){
+                listener.playSound();
                 listener.changeState(Main.PLAY_STATE);
             }
         }
         if(settings.handleUp(x,y)){
             if(listener != null){
+                listener.playSound();
                 listener.changeState(Main.SETTINGS_STATE);
             }
         }

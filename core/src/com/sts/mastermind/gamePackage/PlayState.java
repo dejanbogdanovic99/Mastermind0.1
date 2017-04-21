@@ -82,11 +82,34 @@ public class PlayState extends GameState {
 
     private float combinationY;
 
-    private boolean lost = false;
+    /**
+        Sve vezano za pitanje
+     */
+
+    private final int NEW_GAME = 5;
+
+    private boolean question;
+    private Texture sureTexture;
+    private Image sureImage;
+
+    private Texture yesUp;
+    private Texture yesDown;
+
+    private Texture noUp;
+    private Texture noDown;
+
+    private Button yesButton;
+    private Button noButton;
+
+    private int futureCode;
+
+
+
+    private boolean lost;
     private Texture lostTexture;
     private Image lostImage;
 
-    private boolean won = false;
+    private boolean won;
     private Texture wonTexture;
     private Image wonImage;
 
@@ -133,11 +156,36 @@ public class PlayState extends GameState {
         secretView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
         secretView.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
                         10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
-                height - 450 * scaleY);
+                height - 780 * scaleY);
 
         for(int i = 0; i < bundle.getAmountOfRows();i++){
             secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
         }
+
+
+        wonImage = new Image(wonTexture);
+        wonImage.setScale(scaleX, scaleY);
+        wonImage.setPosition(90 * scaleX,height - (400+ wonImage.getHeight()) * scaleY);
+
+        lostImage = new Image(lostTexture);
+        lostImage.setScale(scaleX, scaleY);
+        lostImage.setPosition(90 * scaleX,height - (400+ lostImage.getHeight()) * scaleY);
+
+        endImage = new Image(endTexture);
+        endImage.setScale(scaleX, scaleY);
+
+        endImage.setPosition(0,0);
+
+        question = false;
+
+        sureImage = new Image(sureTexture);
+        sureImage.setScale(scaleX,scaleY);
+        sureImage.setPosition(90 * scaleX,height - (500+ sureImage.getHeight()) * scaleY);
+
+        yesButton = new Button(yesUp, yesDown, 300*scaleX, height - 950*scaleY, scaleX, scaleY);
+        noButton = new Button(noUp, noDown, width - 300*scaleX, height - 950*scaleY, scaleX, scaleY);
+
+        futureCode = -1;
 
         pastView = new PastView();
     }
@@ -147,7 +195,9 @@ public class PlayState extends GameState {
 
         checkButton.draw(batch, alpha);
 
-        combinationView.draw(batch, alpha);
+        if(!won && !lost) {
+            combinationView.draw(batch, alpha);
+        }
 
        // secretView.draw(batch,alpha);
 
@@ -166,6 +216,13 @@ public class PlayState extends GameState {
             secretView.draw(batch, alpha);
         }
 
+        if(question){
+            endImage.draw(batch,alpha);
+            sureImage.draw(batch,alpha);
+            yesButton.draw(batch, alpha);
+            noButton.draw(batch, alpha);
+        }
+
         menuButton.draw(batch, alpha);
 
         newButton.draw(batch, alpha);
@@ -181,17 +238,85 @@ public class PlayState extends GameState {
             checkButton.handleDown(x,y);
         }
 
+        if(question){
+            yesButton.handleDown(x,y);
+            noButton.handleDown(x,y);
+        }
+
     }
 
     @Override
     public void touchUp(int x, int y) {
+
         if(menuButton.handleUp(x,y)){
+
             if(listener != null){
-                listener.changeState(Main.MAIN_MENU_STATE);
+                listener.playSound();
+            }
+
+            if(won || lost) {
+                if(listener != null){
+                    listener.changeState(Main.MAIN_MENU_STATE);
+                }
+            }else {
+                question = true;
+
+                futureCode = Main.MAIN_MENU_STATE;
+            }
+        }
+
+        if(question){
+            if(noButton.handleUp(x,y)){
+
+                if(listener != null){
+                    listener.playSound();
+                }
+
+                question = false;
+                futureCode = -1;
+            }
+            if(yesButton.handleUp(x,y)){
+
+                question = false;
+
+                if(listener != null){
+                    listener.playSound();
+                }
+
+                if(futureCode == Main.MAIN_MENU_STATE){
+                    if(listener != null){
+                        listener.changeState(Main.MAIN_MENU_STATE);
+                    }
+                }
+
+                if(futureCode == NEW_GAME){
+
+                    numberOfAttempts = 0;
+                    lost = false;
+                    won = false;
+                    combinationY = height - 180*scaleY;
+                    combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+                    combinationView.setPosition(50 * scaleX, combinationY);
+                    createCombination();
+                    pastView.reset();
+                    secretView.getCombination().reset();
+                    for(int i = 0; i < bundle.getAmountOfRows();i++){
+                        secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+                    }
+
+                    menuButton.setPosition(150*scaleX, 100*scaleY);
+                    newButton.setPosition(width - 150*scaleX, 100*scaleY);
+
+                }
             }
         }
 
         if(checkButton.handleUp(x,y)){
+
+            if(listener != null){
+                listener.playSound();
+            }
+
             if(combinationView.getCombination().getFirstEmpty() == -1) {
 
                 ArrayList<Integer> full = new ArrayList<Integer>();
@@ -219,25 +344,15 @@ public class PlayState extends GameState {
 
                 if (full.size() == bundle.getAmountOfRows()){
                     won = true;
-                    wonImage = new Image(wonTexture);
-                    wonImage.setScale(scaleX, scaleY);
-                    wonImage.setPosition(90 * scaleX,height - (100+ wonImage.getHeight()) * scaleY);
-                    endImage = new Image(endTexture);
-                    endImage.setScale(scaleX, scaleY);
-                    endImage.setPosition(0,0);
-                    menuButton.setPosition(300*scaleX, height - 650*scaleY);
-                    newButton.setPosition(width - 300*scaleX, height - 650*scaleY);
+
+                    menuButton.setPosition(300*scaleX, height - 950*scaleY);
+                    newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
 
                 }else if (numberOfAttempts == 10){
                     lost = true;
-                    lostImage = new Image(lostTexture);
-                    lostImage.setScale(scaleX, scaleY);
-                    lostImage.setPosition(90 * scaleX,height - (100+ lostImage.getHeight()) * scaleY);
-                    endImage = new Image(endTexture);
-                    endImage.setScale(scaleX, scaleY);
-                    endImage.setPosition(0,0);
-                    menuButton.setPosition(300*scaleX, height - 650*scaleY);
-                    newButton.setPosition(width - 300*scaleX, height - 650*scaleY);
+
+                    menuButton.setPosition(300*scaleX, height - 950*scaleY);
+                    newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
                 }
 
                 checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfRows(), full.size(), half.size());
@@ -252,47 +367,86 @@ public class PlayState extends GameState {
                  */
 
                 combinationView.setPosition(50 * scaleX, combinationY);
-                if(won || lost){
+                /*if(won || lost){
                     combinationView.setPosition(50 * scaleX, -1000);
-                }
+                }*/
             }
         }
 
         if(newButton.handleUp(x,y)){
-            numberOfAttempts = 0;
-            lost = false;
-            lostImage = null;
-            won = false;
-            wonImage = null;
-            combinationY = height - 180*scaleY;
-            combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-            combinationView.setPosition(50 * scaleX, combinationY);
-            createCombination();
-            pastView.reset();
-            secretView.getCombination().reset();
-            for(int i = 0; i < bundle.getAmountOfRows();i++){
-                secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+
+            if(listener != null){
+                listener.playSound();
             }
 
-            menuButton.setPosition(150*scaleX, 100*scaleY);
-            newButton.setPosition(width - 150*scaleX, 100*scaleY);
+            if(won || lost) {
+                numberOfAttempts = 0;
+                lost = false;
+                won = false;
+                combinationY = height - 180*scaleY;
+                combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
+                combinationView.setPosition(50 * scaleX, combinationY);
+                createCombination();
+                pastView.reset();
+                secretView.getCombination().reset();
+                for(int i = 0; i < bundle.getAmountOfRows();i++){
+                    secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+                }
+
+                menuButton.setPosition(150*scaleX, 100*scaleY);
+                newButton.setPosition(width - 150*scaleX, 100*scaleY);
+            }else {
+                question = true;
+
+                futureCode = NEW_GAME;
+            }
         }
 
-        combinationView.handleInput(x,y);
-        for(int i = 0; i < bundle.getAmountOfSigns();i++){
-            if(colorButtons[i].isPressed(x,y)){
-                int index = combinationView.getCombination().getFirstEmpty();
-                if(index != -1){
-                    combinationView.setSign(index, signs[i], i);
+        if(!question) {
+
+            if (combinationView.handleInput(x, y)) {
+
+
+                if (listener != null) {
+                    listener.playSound();
+                }
+
+
+            }
+            for (int i = 0; i < bundle.getAmountOfSigns(); i++) {
+                if (colorButtons[i].isPressed(x, y)) {
+
+
+                    if (listener != null) {
+                        listener.playSound();
+                    }
+
+
+                    int index = combinationView.getCombination().getFirstEmpty();
+                    if (index != -1) {
+                        combinationView.setSign(index, signs[i], i);
+                    }
                 }
             }
+
+
+
         }
     }
 
     @Override
     public void backPressed() {
-        if(listener != null) {
-            listener.changeState(Main.MAIN_MENU_STATE);
+
+        if(won || lost){
+            if(listener != null){
+                listener.changeState(Main.MAIN_MENU_STATE);
+            }
+        }else if(!question){
+            question = true;
+            futureCode = Main.MAIN_MENU_STATE;
+        }else{
+            futureCode = -1;
+            question = false;
         }
     }
 
@@ -333,7 +487,13 @@ public class PlayState extends GameState {
 
         endTexture = new Texture("end.png");
 
+        sureTexture = new Texture("areusure.png");
 
+        yesUp = new Texture("yes1.png");
+        yesDown = new Texture("yes2.png");
+
+        noUp = new Texture("no1.png");
+        noDown = new Texture("no2.png");
     }
 
     @Override
@@ -357,6 +517,12 @@ public class PlayState extends GameState {
         lostTexture.dispose();
         wonTexture.dispose();
         endTexture.dispose();
+
+        sureTexture.dispose();
+        yesUp.dispose();
+        yesDown.dispose();
+        noUp.dispose();
+        noDown.dispose();
     }
 
     private void createCombination(){

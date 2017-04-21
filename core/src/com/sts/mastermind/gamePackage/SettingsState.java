@@ -182,6 +182,9 @@ public class SettingsState extends GameState {
     @Override
     public void touchUp(int x, int y) {
         if(musicButton.handleUp(x,y)){
+            if(listener != null){
+                listener.playSound();
+            }
             bundle.setVolume(musicButton.isChecked());
             if(musicButton.isChecked()){
                 listener.playMusic();
@@ -190,11 +193,19 @@ public class SettingsState extends GameState {
             }
         }
         if(repeatSignsButton.handleUp(x,y)){
+            if(listener != null){
+                listener.playSound();
+            }
             bundle.setRepeatSigns(repeatSignsButton.isChecked());
         }
 
 
         if(decRowsButton.handleUp(x,y)){
+
+            if(listener != null){
+                listener.playSound();
+            }
+
             if(bundle.getAmountOfRows() != MIN_ROWS){
                 bundle.setAmountOfRows(bundle.getAmountOfRows()-1);
                 rowNumber.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
@@ -202,6 +213,11 @@ public class SettingsState extends GameState {
         }
 
         if(incRowsButton.handleUp(x,y)){
+
+            if(listener != null){
+                listener.playSound();
+            }
+
             if(bundle.getAmountOfRows() != MAX_ROWS){
                 bundle.setAmountOfRows(bundle.getAmountOfRows()+1);
                 rowNumber.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
@@ -209,6 +225,11 @@ public class SettingsState extends GameState {
         }
 
         if(decSignsButton.handleUp(x,y)){
+
+            if(listener != null){
+                listener.playSound();
+            }
+
             if(bundle.getAmountOfSigns() != MIN_SIGNS){
                 bundle.setAmountOfSigns(bundle.getAmountOfSigns()-1);
                 signNumber.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
@@ -216,18 +237,33 @@ public class SettingsState extends GameState {
         }
 
         if(incSignsButton.handleUp(x,y)){
+
+            if(listener != null){
+                listener.playSound();
+            }
+
             if(bundle.getAmountOfSigns() != MAX_SIGNS){
                 bundle.setAmountOfSigns(bundle.getAmountOfSigns()+1);
                 signNumber.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
             }
         }
         if(incColorButton.handleUp(x, y)){
+
+            if(listener != null){
+                listener.playSound();
+            }
+
             if(bundle.getBgColor() != MAX_BGCOLOR){
                 bundle.setBgColor(bundle.getBgColor()+1);
                 colorImage.setTexture(bgColors[bundle.getBgColor()]);
             }
         }
         if(decColorButton.handleUp(x, y)){
+
+            if(listener != null){
+                listener.playSound();
+            }
+
             if(bundle.getBgColor() != MIN_BGCOLOR){
                 bundle.setBgColor(bundle.getBgColor()-1);
                 colorImage.setTexture(bgColors[bundle.getBgColor()]);
@@ -245,6 +281,7 @@ public class SettingsState extends GameState {
     @Override
     public void backPressed() {
         if(listener != null) {
+            listener.playSound();
             listener.changeState(Main.MAIN_MENU_STATE);
         }
     }
