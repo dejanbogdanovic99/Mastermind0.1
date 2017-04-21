@@ -7,19 +7,16 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
-import com.sts.mastermind.combinationPackage.Combination;
 import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.gamePackage.PlayState;
 import com.sts.mastermind.gamePackage.SettingsState;
 import com.sts.mastermind.listenerPackage.ChangeState;
-import com.sts.mastermind.listenerPackage.MusicManager;
 
-public class Main extends ApplicationAdapter implements InputProcessor, ChangeState, MusicManager{
+public class Main extends ApplicationAdapter implements InputProcessor, ChangeState{
 
 	/**
 	 Konstante za delove igre
@@ -170,7 +167,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[SETTINGS_STATE].initTextures();
 
 		stateOfGame[SETTINGS_STATE].setChangeListener(this);
-		((SettingsState)stateOfGame[SETTINGS_STATE]).setMusicManager(this);
 
 		ready = true;
 
@@ -279,6 +275,11 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	@Override
 	public void stopMusic() {
 		bgMusic.stop();
+	}
+
+	@Override
+	public void playSound(){
+
 	}
 
 	@Override

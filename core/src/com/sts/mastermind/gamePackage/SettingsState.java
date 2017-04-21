@@ -2,13 +2,11 @@ package com.sts.mastermind.gamePackage;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.guiPackage.BasicImage;
 import com.sts.mastermind.guiPackage.Button;
 import com.sts.mastermind.guiPackage.CheckButton;
-import com.sts.mastermind.listenerPackage.MusicManager;
 
 public class SettingsState extends GameState {
 
@@ -67,15 +65,9 @@ public class SettingsState extends GameState {
 
 
 
-    private MusicManager musicManager = null;
-
 
     public SettingsState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
         super(bundle, scaleX, scaleY, width, height);
-    }
-
-    public void setMusicManager(MusicManager musicManager){
-        this.musicManager = musicManager;
     }
 
     @Override
@@ -192,9 +184,9 @@ public class SettingsState extends GameState {
         if(musicButton.handleUp(x,y)){
             bundle.setVolume(musicButton.isChecked());
             if(musicButton.isChecked()){
-                musicManager.playMusic();
+                listener.playMusic();
             }else{
-                musicManager.stopMusic();
+                listener.stopMusic();
             }
         }
         if(repeatSignsButton.handleUp(x,y)){
