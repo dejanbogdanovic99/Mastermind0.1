@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -90,6 +91,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	 */
 
 	private Music bgMusic;
+
+	private Sound clickSound;
 
 	/**
 	 scale slika
@@ -183,6 +186,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 			bgMusic.play();
 		}
 
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("Button Click.mp3"));
+
 		Gdx.input.setInputProcessor(this);
 
 		Gdx.input.setCatchBackKey(true);
@@ -244,6 +249,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		batch.dispose();
 		bgMusic.stop();
 		bgMusic.dispose();
+		clickSound.stop();
+		clickSound.dispose();
 	}
 
 	private void initTextures(){
@@ -279,7 +286,9 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 
 	@Override
 	public void playSound(){
-
+		if(bundle.getVolume()){
+			clickSound.play();
+		}
 	}
 
 	@Override

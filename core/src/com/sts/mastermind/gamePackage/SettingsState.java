@@ -236,6 +236,7 @@ public class SettingsState extends GameState {
 
         if(menuButton.handleUp(x,y)){
             if(listener != null){
+                listener.playSound();
                 listener.changeState(Main.MAIN_MENU_STATE);
             }
         }
