@@ -11,6 +11,7 @@ import com.sts.mastermind.guiPackage.CheckView;
 import com.sts.mastermind.guiPackage.ColorButton;
 import com.sts.mastermind.guiPackage.CombinationView;
 import com.sts.mastermind.guiPackage.PastView;
+import com.sts.mastermind.guiPackage.TimerView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -81,6 +82,12 @@ public class PlayState extends GameState {
     private CheckView checkView;
 
     private float combinationY;
+
+
+
+    private TimerView timerView;
+
+    private Texture timerTexture;
 
     /**
         Sve vezano za pitanje
@@ -188,6 +195,8 @@ public class PlayState extends GameState {
         futureCode = -1;
 
         pastView = new PastView();
+
+        timerView = new TimerView(timerTexture, 20, 0, height - 1530*scaleY, scaleX, scaleY);
     }
 
     @Override
@@ -205,6 +214,9 @@ public class PlayState extends GameState {
             colorButtons[i].draw(batch, alpha);
         }
         pastView.draw(batch, alpha);
+
+
+        timerView.draw(batch, alpha);
 
         if(lost){
             endImage.draw(batch, alpha);
@@ -435,6 +447,11 @@ public class PlayState extends GameState {
     }
 
     @Override
+    public void update(float delta) {
+        timerView.update(delta);
+    }
+
+    @Override
     public void backPressed() {
 
         if(won || lost){
@@ -494,6 +511,8 @@ public class PlayState extends GameState {
 
         noUp = new Texture("no1.png");
         noDown = new Texture("no2.png");
+
+        timerTexture = new Texture("timer.png");
     }
 
     @Override
@@ -523,6 +542,8 @@ public class PlayState extends GameState {
         yesDown.dispose();
         noUp.dispose();
         noDown.dispose();
+
+        timerTexture.dispose();
     }
 
     private void createCombination(){
