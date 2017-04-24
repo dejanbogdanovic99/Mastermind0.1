@@ -8,8 +8,12 @@ public class TimerView {
 
     private Image image;
 
+    private Image bgImage;
+
     private float x;
     private float y;
+
+    private float upY;
 
     private float scaleX;
     private float standardScaleY;
@@ -24,13 +28,23 @@ public class TimerView {
 
     private boolean finished;
 
-    public TimerView(Texture texture, float maxTime, float x, float y, float scaleX, float scaleY){
-        image = new Image(texture);
-        image.setPosition(x,y);
+    public TimerView(Texture texture, Texture bgTexture, float maxTime, float x, float y, float scaleX, float scaleY){
 
+
+        bgImage = new Image(bgTexture);
+        bgImage.setPosition(x,y);
+        bgImage.setScale(scaleX, scaleY);
+
+
+        image = new Image(texture);
+        image.setPosition(x + 10*scaleX,y + 10*scaleY);
         image.setScale(scaleX, scaleY);
+
+
         this.x = x;
         this.y = y;
+
+        this.upY = y + (10 + image.getHeight())*scaleY;
 
         this.scaleX = scaleX;
         this.standardScaleY = scaleY;
@@ -40,14 +54,23 @@ public class TimerView {
 
         paused = false;
         finished = false;
+
+        currentTime = 0;
     }
 
     public void pause(){
         paused = true;
     }
 
-    public void start(){
+    public void resume(){
         paused = false;
+    }
+
+    public void reset(){
+        this.currentScaleY = standardScaleY;
+        currentTime = 0;
+        paused = false;
+        finished = false;
     }
 
     public void update(float delta){
@@ -61,7 +84,11 @@ public class TimerView {
 
             currentScaleY = ((maxTime - currentTime)/maxTime)*standardScaleY;
 
+            float currentY = upY - image.getHeight()*currentScaleY;
+
             image.setScaleY(currentScaleY);
+
+            image.setY(currentY);
 
         }
 
@@ -72,6 +99,7 @@ public class TimerView {
     }
 
     public void draw(SpriteBatch batch, float alpha){
+        bgImage.draw(batch, alpha);
         image.draw(batch,alpha);
     }
 

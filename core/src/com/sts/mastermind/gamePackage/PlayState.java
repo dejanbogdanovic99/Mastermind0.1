@@ -2,15 +2,15 @@ package com.sts.mastermind.gamePackage;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
 import com.sts.mastermind.combinationPackage.Combination;
+import com.sts.mastermind.guiPackage.BasicImage;
 import com.sts.mastermind.guiPackage.Button;
 import com.sts.mastermind.guiPackage.CheckView;
-import com.sts.mastermind.guiPackage.ColorButton;
 import com.sts.mastermind.guiPackage.CombinationView;
 import com.sts.mastermind.guiPackage.PastView;
+import com.sts.mastermind.guiPackage.SignButton;
 import com.sts.mastermind.guiPackage.TimerView;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class PlayState extends GameState {
     public static final int GEAR_CODE = 7;
 
     /**
-     * texture
+     * ostale texture
      */
 
     private Texture [] signs;
@@ -46,58 +46,96 @@ public class PlayState extends GameState {
     private Texture fullHit;
     private Texture halfHit;
 
+
+
+
+    /**
+     * tajna kombinacija
+     */
+
+
+    private Combination secretCombination;
+
+    private CombinationView secretView;
+
+    /**
+     * menu taster
+     */
+
     private Texture menuUp;
     private Texture menuDown;
+
+    private Button menuButton;
+
+    /**
+     * new taster
+     */
 
     private Texture newUp;
     private Texture newDown;
 
+    private Button newButton;
+
+
+    /**
+     * check taster
+     */
+
     private Texture checkUp;
     private Texture checkDown;
 
+    private Button checkButton;
+
+
     /**
-     * kombinacija
+     * tasteri za znakove
      */
 
-    private Combination secretCombination;
+    private SignButton[] signButtons;
 
     /**
-     * tasteri za boje
+     * kombinacija sa kojom se radi
+     * #combinationY -> prati trenutnu poziciju kombinacije
      */
 
     private CombinationView combinationView;
 
-    private CombinationView secretView;
-
-    private ColorButton [] colorButtons;
-
-    private Button menuButton;
-
-    private Button newButton;
-
-    private Button checkButton;
-
-    private PastView pastView;
-
-    private CheckView checkView;
-
     private float combinationY;
 
 
+    /**
+     * pracenje dosadasnjih pokusaja
+     */
 
-    private TimerView timerView;
+    private PastView pastView;
+
+    private int numberOfAttempts;
+
+
+    /**
+     * tajmer
+     * dozvola za tajmer
+     */
 
     private Texture timerTexture;
 
+    private Texture timerBackTexture;
+
+    private TimerView timerView;
+
+    private boolean timerEnabled;
+
     /**
-        Sve vezano za pitanje
+     * pauza i pitanje
      */
 
-    private final int NEW_GAME = 5;
+    private final int NO_CODE = -1;
+    private final int NEW_GAME = 0;
+    private final int MAIN_MENU = 1;
 
-    private boolean question;
+    private boolean questionVisible;
+
     private Texture sureTexture;
-    private Image sureImage;
 
     private Texture yesUp;
     private Texture yesDown;
@@ -105,25 +143,39 @@ public class PlayState extends GameState {
     private Texture noUp;
     private Texture noDown;
 
+    private BasicImage sureImage;
+
     private Button yesButton;
     private Button noButton;
 
     private int futureCode;
 
-
-
+    /**
+     * za izgubljeni
+     */
     private boolean lost;
+
     private Texture lostTexture;
-    private Image lostImage;
+
+    private BasicImage lostImage;
+
+    /**
+     * za pobedjeni
+     */
 
     private boolean won;
+
     private Texture wonTexture;
-    private Image wonImage;
 
-    private Texture endTexture;
-    private Image endImage;
+    private BasicImage wonImage;
 
-    private int numberOfAttempts;
+    /**
+     * potamljena pozadina
+     */
+
+    private Texture bgDarkTexture;
+
+    private BasicImage bgDarkImage;
 
 
     public PlayState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
@@ -133,70 +185,59 @@ public class PlayState extends GameState {
     @Override
     public void init() {
 
-        initColorButtons();
-
         createCombination();
 
-        float x = 150*scaleX;
-        float y = 100*scaleY;
-
-        won = false;
-        lost = false;
-
-        numberOfAttempts = 0;
-
-        combinationY = height - 180*scaleY;
-
-        menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
-
-        x = width - 150*scaleX;
-
-        newButton = new Button(newUp, newDown, x, y, scaleX, scaleY);
-
-        x = width / 2;
-
-        checkButton = new Button(checkUp, checkDown, x, y, scaleX, scaleY);
-
-        combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-        combinationView.setPosition(50*scaleX, combinationY);
-
-        secretView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-        secretView.setPosition((width - 100 * bundle.getAmountOfRows() * scaleX -
-                        10 * (bundle.getAmountOfRows()-1) * scaleX) / 2,
+        secretView = new CombinationView(bundle.getAmountOfColumns(), signBack, scaleX, scaleY);
+        secretView.setPosition((width - 100 * bundle.getAmountOfColumns() * scaleX -
+                        10 * (bundle.getAmountOfColumns()-1) * scaleX) / 2,
                 height - 780 * scaleY);
 
-        for(int i = 0; i < bundle.getAmountOfRows();i++){
+        for(int i = 0; i < bundle.getAmountOfColumns();i++){
             secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
         }
 
 
-        wonImage = new Image(wonTexture);
-        wonImage.setScale(scaleX, scaleY);
-        wonImage.setPosition(90 * scaleX,height - (400+ wonImage.getHeight()) * scaleY);
 
-        lostImage = new Image(lostTexture);
-        lostImage.setScale(scaleX, scaleY);
-        lostImage.setPosition(90 * scaleX,height - (400+ lostImage.getHeight()) * scaleY);
 
-        endImage = new Image(endTexture);
-        endImage.setScale(scaleX, scaleY);
+        menuButton = new Button(menuUp, menuDown, 150*scaleX, 100*scaleY, scaleX, scaleY);
 
-        endImage.setPosition(0,0);
+        newButton = new Button(newUp, newDown, width - 150*scaleX, 100*scaleY, scaleX, scaleY);
 
-        question = false;
+        checkButton = new Button(checkUp, checkDown, width / 2, 100*scaleY, scaleX, scaleY);
 
-        sureImage = new Image(sureTexture);
-        sureImage.setScale(scaleX,scaleY);
-        sureImage.setPosition(90 * scaleX,height - (500+ sureImage.getHeight()) * scaleY);
 
-        yesButton = new Button(yesUp, yesDown, 300*scaleX, height - 950*scaleY, scaleX, scaleY);
-        noButton = new Button(noUp, noDown, width - 300*scaleX, height - 950*scaleY, scaleX, scaleY);
 
-        futureCode = -1;
+        initSignButtons();
+
+
+        combinationY = height - 180*scaleY;
+
+        combinationView = new CombinationView(bundle.getAmountOfColumns(), signBack, scaleX, scaleY);
+        combinationView.setPosition(70*scaleX, combinationY);
+
 
         pastView = new PastView();
 
-        timerView = new TimerView(timerTexture, 20, 0, height - 1530*scaleY, scaleX, scaleY);
+        numberOfAttempts = 0;
+
+
+
+        setUpTimer();
+
+        setUpQuestion();
+
+
+        lost = false;
+
+        lostImage = new BasicImage(lostTexture, width /2, height - 700*scaleY, scaleX, scaleY);
+
+
+
+        won = false;
+
+        wonImage = new BasicImage(wonTexture, width /2, height - 700*scaleY, scaleX, scaleY);
+
+        bgDarkImage = new BasicImage(bgDarkTexture, width /2, height/2, scaleX, scaleY);
     }
 
     @Override
@@ -204,55 +245,56 @@ public class PlayState extends GameState {
 
         checkButton.draw(batch, alpha);
 
+        for(int i = 0; i < bundle.getAmountOfSigns();i++){
+            signButtons[i].draw(batch, alpha);
+        }
+
+        pastView.draw(batch, alpha);
+
+        if(timerEnabled) {
+            timerView.draw(batch, alpha);
+        }
+
         if(!won && !lost) {
             combinationView.draw(batch, alpha);
         }
 
-       // secretView.draw(batch,alpha);
-
-        for(int i = 0; i < bundle.getAmountOfSigns();i++){
-            colorButtons[i].draw(batch, alpha);
-        }
-        pastView.draw(batch, alpha);
-
-
-        timerView.draw(batch, alpha);
-
-        if(lost){
-            endImage.draw(batch, alpha);
-            lostImage.draw(batch, alpha);
-            secretView.draw(batch, alpha);
-        }else if(won){
-            endImage.draw(batch, alpha);
+        if(won){
+            bgDarkImage.draw(batch, alpha);
             wonImage.draw(batch, alpha);
             secretView.draw(batch, alpha);
+
         }
 
-        if(question){
-            endImage.draw(batch,alpha);
-            sureImage.draw(batch,alpha);
-            yesButton.draw(batch, alpha);
-            noButton.draw(batch, alpha);
+        if(lost){
+            bgDarkImage.draw(batch, alpha);
+            lostImage.draw(batch, alpha);
+            secretView.draw(batch, alpha);
         }
 
         menuButton.draw(batch, alpha);
 
         newButton.draw(batch, alpha);
 
+        if(questionVisible){
+            bgDarkImage.draw(batch, alpha);
+            sureImage.draw(batch, alpha);
+            yesButton.draw(batch, alpha);
+            noButton.draw(batch, alpha);
+        }
     }
 
     @Override
     public void touchDown(int x, int y) {
 
-        menuButton.handleDown(x,y);
-        newButton.handleDown(x,y);
-        if(!won && !lost){
-            checkButton.handleDown(x,y);
-        }
-
-        if(question){
+        if(questionVisible){
             yesButton.handleDown(x,y);
             noButton.handleDown(x,y);
+        }else if(won || lost){
+            menuButton.handleDown(x,y);
+            newButton.handleDown(x,y);
+        }else{
+            checkButton.handleDown(x,y);
         }
 
     }
@@ -260,42 +302,32 @@ public class PlayState extends GameState {
     @Override
     public void touchUp(int x, int y) {
 
-        if(menuButton.handleUp(x,y)){
+        if(questionVisible){
 
-            if(listener != null){
-                listener.playSound();
-            }
 
-            if(won || lost) {
-                if(listener != null){
-                    listener.changeState(Main.MAIN_MENU_STATE);
-                }
-            }else {
-                question = true;
-
-                futureCode = Main.MAIN_MENU_STATE;
-            }
-        }
-
-        if(question){
             if(noButton.handleUp(x,y)){
 
                 if(listener != null){
                     listener.playSound();
                 }
 
-                question = false;
-                futureCode = -1;
+                questionVisible = false;
+                futureCode = NO_CODE;
+
+                if(timerEnabled){
+                    timerView.resume();
+                }
             }
+
             if(yesButton.handleUp(x,y)){
 
-                question = false;
+                questionVisible = false;
 
                 if(listener != null){
                     listener.playSound();
                 }
 
-                if(futureCode == Main.MAIN_MENU_STATE){
+                if(futureCode == MAIN_MENU){
                     if(listener != null){
                         listener.changeState(Main.MAIN_MENU_STATE);
                     }
@@ -307,132 +339,90 @@ public class PlayState extends GameState {
                     lost = false;
                     won = false;
                     combinationY = height - 180*scaleY;
-                    combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-                    combinationView.setPosition(50 * scaleX, combinationY);
+                    combinationView = new CombinationView(bundle.getAmountOfColumns(), signBack, scaleX, scaleY);
+                    combinationView.setPosition(70 * scaleX, combinationY);
                     createCombination();
                     pastView.reset();
                     secretView.getCombination().reset();
-                    for(int i = 0; i < bundle.getAmountOfRows();i++){
+                    for(int i = 0; i < bundle.getAmountOfColumns();i++){
                         secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
                     }
 
                     menuButton.setPosition(150*scaleX, 100*scaleY);
                     newButton.setPosition(width - 150*scaleX, 100*scaleY);
 
-                }
-            }
-        }
-
-        if(checkButton.handleUp(x,y)){
-
-            if(listener != null){
-                listener.playSound();
-            }
-
-            if(combinationView.getCombination().getFirstEmpty() == -1) {
-
-                ArrayList<Integer> full = new ArrayList<Integer>();
-                ArrayList<Integer> half = new ArrayList<Integer>();
-
-                for(int i = 0; i < bundle.getAmountOfRows();i++){
-                    if(combinationView.getCombination().getSign(i) == secretCombination.getSign(i)){
-                        full.add(i);
+                    if(timerEnabled){
+                        timerView.reset();
                     }
+
                 }
-
-                for(int i = 0; i < bundle.getAmountOfRows();i++){
-                    int j = 0;
-                    boolean found = false;
-                    while(j < bundle.getAmountOfRows() && !found){
-                        if(combinationView.getCombination().getSign(i) == secretCombination.getSign(j) && !full.contains(i) && !full.contains(j) && !half.contains(j)){
-                            half.add(j);
-                            found = true;
-                        }
-                        j++;
-                    }
-                }
-
-                numberOfAttempts++;
-
-                if (full.size() == bundle.getAmountOfRows()){
-                    won = true;
-
-                    menuButton.setPosition(300*scaleX, height - 950*scaleY);
-                    newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
-
-                }else if (numberOfAttempts == 10){
-                    lost = true;
-
-                    menuButton.setPosition(300*scaleX, height - 950*scaleY);
-                    newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
-                }
-
-                checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfRows(), full.size(), half.size());
-                checkView.setPosition(width - 300 * scaleX, combinationY + 35 * scaleY);
-                pastView.add(combinationView, checkView);
-                combinationY -= 150 * scaleY;
-                combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-
-                /*
-                da sklonim combination view ako se ne gadja vise
-
-                 */
-
-                combinationView.setPosition(50 * scaleX, combinationY);
-                /*if(won || lost){
-                    combinationView.setPosition(50 * scaleX, -1000);
-                }*/
-            }
-        }
-
-        if(newButton.handleUp(x,y)){
-
-            if(listener != null){
-                listener.playSound();
             }
 
-            if(won || lost) {
-                numberOfAttempts = 0;
-                lost = false;
-                won = false;
-                combinationY = height - 180*scaleY;
-                combinationView = new CombinationView(bundle.getAmountOfRows(), signBack, scaleX, scaleY);
-                combinationView.setPosition(50 * scaleX, combinationY);
-                createCombination();
-                pastView.reset();
-                secretView.getCombination().reset();
-                for(int i = 0; i < bundle.getAmountOfRows();i++){
-                    secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
-                }
-
-                menuButton.setPosition(150*scaleX, 100*scaleY);
-                newButton.setPosition(width - 150*scaleX, 100*scaleY);
-            }else {
-                question = true;
-
-                futureCode = NEW_GAME;
-            }
-        }
-
-        if(!question) {
-
-            if (combinationView.handleInput(x, y)) {
 
 
-                if (listener != null) {
+
+        }else if(!won && !lost){
+
+
+
+            if(checkButton.handleUp(x,y)){
+
+                if(listener != null){
                     listener.playSound();
                 }
 
+                if(combinationView.getCombination().getFirstEmpty() == -1) {
 
-            }
-            for (int i = 0; i < bundle.getAmountOfSigns(); i++) {
-                if (colorButtons[i].isPressed(x, y)) {
+                    ArrayList<Integer> full = new ArrayList<Integer>();
+                    ArrayList<Integer> half = new ArrayList<Integer>();
 
-
-                    if (listener != null) {
-                        listener.playSound();
+                    for(int i = 0; i < bundle.getAmountOfColumns();i++){
+                        if(combinationView.getCombination().getSign(i) == secretCombination.getSign(i)){
+                            full.add(i);
+                        }
                     }
 
+                    for(int i = 0; i < bundle.getAmountOfColumns();i++){
+                        int j = 0;
+                        boolean found = false;
+                        while(j < bundle.getAmountOfColumns() && !found){
+                            if(combinationView.getCombination().getSign(i) == secretCombination.getSign(j) && !full.contains(i) && !full.contains(j) && !half.contains(j)){
+                                half.add(j);
+                                found = true;
+                            }
+                            j++;
+                        }
+                    }
+
+                    numberOfAttempts++;
+
+                    if (full.size() == bundle.getAmountOfColumns()){
+                        won = true;
+
+                        menuButton.setPosition(300*scaleX, height - 950*scaleY);
+                        newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
+
+                    }else if (numberOfAttempts == 10){
+                        lost = true;
+
+                        menuButton.setPosition(300*scaleX, height - 950*scaleY);
+                        newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
+                    }
+
+                    CheckView checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfColumns(), full.size(), half.size());
+                    checkView.setPosition(width - 300 * scaleX, combinationY + 35 * scaleY);
+                    pastView.add(combinationView, checkView);
+                    combinationY -= 150 * scaleY;
+                    combinationView = new CombinationView(bundle.getAmountOfColumns(), signBack, scaleX, scaleY);
+                    combinationView.setPosition(70 * scaleX, combinationY);
+
+                }
+            }
+
+            combinationView.handleInput(x, y);
+
+            for (int i = 0; i < bundle.getAmountOfSigns(); i++) {
+                if (signButtons[i].isPressed(x, y)) {
 
                     int index = combinationView.getCombination().getFirstEmpty();
                     if (index != -1) {
@@ -442,13 +432,94 @@ public class PlayState extends GameState {
             }
 
 
+            if(newButton.handleUp(x,y)){
+
+                if(listener != null){
+                    listener.playSound();
+                }
+
+                if(timerEnabled){
+                    timerView.pause();
+                }
+
+                questionVisible = true;
+
+                futureCode = NEW_GAME;
+
+            }
+
+            if(menuButton.handleUp(x,y)){
+                if(listener != null){
+                    listener.playSound();
+                }
+
+                if(timerEnabled){
+                    timerView.pause();
+                }
+
+                questionVisible = true;
+
+                futureCode = MAIN_MENU;
+
+            }
+
+        }else{
+
+
+            if(newButton.handleUp(x,y)){
+
+                if(listener != null){
+                    listener.playSound();
+                }
+
+                numberOfAttempts = 0;
+                lost = false;
+                won = false;
+                combinationY = height - 180*scaleY;
+                combinationView = new CombinationView(bundle.getAmountOfColumns(), signBack, scaleX, scaleY);
+                combinationView.setPosition(70 * scaleX, combinationY);
+                createCombination();
+                pastView.reset();
+                secretView.getCombination().reset();
+                for(int i = 0; i < bundle.getAmountOfColumns();i++){
+                    secretView.setSign(i, signs[secretCombination.getSign(i)], secretCombination.getSign(i));
+                }
+
+                menuButton.setPosition(150*scaleX, 100*scaleY);
+                newButton.setPosition(width - 150*scaleX, 100*scaleY);
+
+                if(timerEnabled){
+                    timerView.reset();
+                }
+            }
+
+
+            if(menuButton.handleUp(x,y)) {
+
+                if (listener != null) {
+                    listener.playSound();
+                }
+
+                if (listener != null) {
+                    listener.changeState(Main.MAIN_MENU_STATE);
+                }
+            }
 
         }
+
     }
 
     @Override
     public void update(float delta) {
-        timerView.update(delta);
+        if(timerEnabled){
+            timerView.update(delta);
+            if(timerView.isFinished()){
+                lost = true;
+
+                menuButton.setPosition(300*scaleX, height - 950*scaleY);
+                newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
+            }
+        }
     }
 
     @Override
@@ -458,12 +529,18 @@ public class PlayState extends GameState {
             if(listener != null){
                 listener.changeState(Main.MAIN_MENU_STATE);
             }
-        }else if(!question){
-            question = true;
-            futureCode = Main.MAIN_MENU_STATE;
+        }else if(!questionVisible){
+            questionVisible = true;
+            futureCode = MAIN_MENU;
+            if(timerEnabled) {
+                timerView.pause();
+            }
         }else{
-            futureCode = -1;
-            question = false;
+            futureCode = NO_CODE;
+            questionVisible = false;
+            if(timerEnabled) {
+                timerView.resume();
+            }
         }
     }
 
@@ -502,7 +579,7 @@ public class PlayState extends GameState {
         lostTexture = new Texture("lose.png");
         wonTexture = new Texture("win.png");
 
-        endTexture = new Texture("end.png");
+        bgDarkTexture = new Texture("end.png");
 
         sureTexture = new Texture("areusure.png");
 
@@ -512,7 +589,8 @@ public class PlayState extends GameState {
         noUp = new Texture("no1.png");
         noDown = new Texture("no2.png");
 
-        timerTexture = new Texture("timer.png");
+        timerTexture = new Texture("timerline.png");
+        timerBackTexture = new Texture("timerback.png");
     }
 
     @Override
@@ -535,7 +613,7 @@ public class PlayState extends GameState {
 
         lostTexture.dispose();
         wonTexture.dispose();
-        endTexture.dispose();
+        bgDarkTexture.dispose();
 
         sureTexture.dispose();
         yesUp.dispose();
@@ -544,15 +622,16 @@ public class PlayState extends GameState {
         noDown.dispose();
 
         timerTexture.dispose();
+        timerBackTexture.dispose();
     }
 
     private void createCombination(){
 
-        secretCombination = new Combination(bundle.getAmountOfRows());
+        secretCombination = new Combination(bundle.getAmountOfColumns());
         Random random = new Random();
 
-        if(bundle.getRepeatSigns()){
-            for(int i = 0; i < bundle.getAmountOfRows();i++){
+        if(bundle.isRepeatSigns()){
+            for(int i = 0; i < bundle.getAmountOfColumns();i++){
                 int sign = random.nextInt(bundle.getAmountOfSigns());
                 secretCombination.setSign(i,sign);
             }
@@ -562,7 +641,7 @@ public class PlayState extends GameState {
                 number.add(i);
             }
 
-            for(int i = 0; i < bundle.getAmountOfRows();i++){
+            for(int i = 0; i < bundle.getAmountOfColumns();i++){
                 int sign = random.nextInt(number.size());
                 secretCombination.setSign(i, number.get(sign));
                 number.remove(sign);
@@ -570,13 +649,49 @@ public class PlayState extends GameState {
         }
     }
 
-    private void initColorButtons(){
-        colorButtons = new ColorButton[8];
+    private void setUpTimer() {
+
+        float time = 0;
+
+        timerEnabled = true;
+
+        if(bundle.getTimerValue() == DataBundle.INFINITE){
+            timerEnabled = false;
+        }else if(bundle.getTimerValue() == DataBundle.T_30S){
+            time = 30;
+        }else if(bundle.getTimerValue() == DataBundle.T_1M){
+            time = 60;
+        }else if(bundle.getTimerValue() == DataBundle.T_2M){
+            time = 120;
+        }else if(bundle.getTimerValue() == DataBundle.T_5M){
+            time = 300;
+        }
+
+        timerView = new TimerView(timerTexture, timerBackTexture, time, 17*scaleX, height - 1530*scaleY, scaleX, scaleY);
+
+    }
+
+    private void setUpQuestion(){
+
+        questionVisible = false;
+
+        yesButton = new Button(yesUp, yesDown, 300*scaleX, height - 850*scaleY, scaleX, scaleY);
+        noButton = new Button(noUp, noDown, width - 300*scaleX, height - 850*scaleY, scaleX, scaleY);
+
+
+        sureImage = new BasicImage(sureTexture, width /2, height - 700*scaleY, scaleX, scaleY);
+
+        futureCode = NO_CODE;
+
+    }
+
+    private void initSignButtons(){
+        signButtons = new SignButton[8];
 
         float x = width / (bundle.getAmountOfSigns() +1);
         float y = 280*scaleY;
 
-        colorButtons[CLUB_CODE] = new ColorButton(
+        signButtons[CLUB_CODE] = new SignButton(
                 signs[CLUB_CODE],
                 CLUB_CODE,
                 x,
@@ -587,7 +702,7 @@ public class PlayState extends GameState {
 
         x += width / (bundle.getAmountOfSigns() +1);
 
-        colorButtons[SPADES_CODE] = new ColorButton(
+        signButtons[SPADES_CODE] = new SignButton(
                 signs[SPADES_CODE],
                 SPADES_CODE,
                 x,
@@ -598,7 +713,7 @@ public class PlayState extends GameState {
 
         x += width / (bundle.getAmountOfSigns() +1);
 
-        colorButtons[HEART_CODE] = new ColorButton(
+        signButtons[HEART_CODE] = new SignButton(
                 signs[HEART_CODE],
                 HEART_CODE,
                 x,
@@ -609,7 +724,7 @@ public class PlayState extends GameState {
 
         x += width / (bundle.getAmountOfSigns() +1);
 
-        colorButtons[DIAMOND_CODE] = new ColorButton(
+        signButtons[DIAMOND_CODE] = new SignButton(
                 signs[DIAMOND_CODE],
                 DIAMOND_CODE,
                 x,
@@ -620,7 +735,7 @@ public class PlayState extends GameState {
 
         x += width / (bundle.getAmountOfSigns() +1);
 
-        colorButtons[BULB_CODE] = new ColorButton(
+        signButtons[BULB_CODE] = new SignButton(
                 signs[BULB_CODE],
                 BULB_CODE,
                 x,
@@ -631,7 +746,7 @@ public class PlayState extends GameState {
 
         x += width / (bundle.getAmountOfSigns() +1);
 
-        colorButtons[STAR_CODE] = new ColorButton(
+        signButtons[STAR_CODE] = new SignButton(
                 signs[STAR_CODE],
                 STAR_CODE,
                 x,
@@ -642,7 +757,7 @@ public class PlayState extends GameState {
 
         x += width / (bundle.getAmountOfSigns() +1);
 
-        colorButtons[FLOWER_CODE] = new ColorButton(
+        signButtons[FLOWER_CODE] = new SignButton(
                 signs[FLOWER_CODE],
                 FLOWER_CODE,
                 x,
@@ -653,7 +768,7 @@ public class PlayState extends GameState {
 
         x += width / (bundle.getAmountOfSigns() +1);
 
-        colorButtons[GEAR_CODE] = new ColorButton(
+        signButtons[GEAR_CODE] = new SignButton(
                 signs[GEAR_CODE],
                 GEAR_CODE,
                 x,

@@ -4,7 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class ColorButton {
+/**
+ * Created by Dejan on 24-Apr-17.
+ */
+
+public class SignButton {
 
     private Image image;
 
@@ -16,7 +20,7 @@ public class ColorButton {
     private float width;
     private float height;
 
-    public ColorButton(Texture texture,
+    public SignButton(Texture texture,
                        int textureCode,
                        float x,
                        float y,

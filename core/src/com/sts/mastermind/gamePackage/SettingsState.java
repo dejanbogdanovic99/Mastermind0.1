@@ -11,23 +11,86 @@ import com.sts.mastermind.guiPackage.CheckButton;
 public class SettingsState extends GameState {
 
     private final int OFFSET = 300;
-    private final int MIN_ROWS = 4;
-    private final int MAX_ROWS = 6;
+    private final int MIN_COLUMNS = 4;
+    private final int MAX_COLUMNS = 6;
     private final int MIN_SIGNS = 6;
     private final int MAX_SIGNS = 8;
-    private final int MAX_BGCOLOR = 4;
-    private final int MIN_BGCOLOR = 0;
+    private final int MIN_TIMER_VALUE = 0;
+    private final int MAX_TIMER_VALUE = 4;
 
-    private Texture [] numberTextures;
 
-    private Texture playMusicChecked;
-    private Texture playMusicUnchecked;
+    /**
+     * kad se cekira sviramo muziku i zvuke
+     */
+
+    private Texture soundsChecked;
+    private Texture soundsUnchecked;
+
+    private CheckButton soundsButton;
+
+    /**
+     *  kad se cekira ponavljaju se znaci
+     */
 
     private Texture repeatSignsChecked;
     private Texture repeatSignsUnchecked;
 
-    private Texture signTexture;
+    private CheckButton repeatSignsButton;
+
+
+    /**
+     * biranje kolona koliko ima
+     */
+
     private Texture columnTexture;
+
+    private Button incColumnButton;
+    private Button decColumnButton;
+
+    private BasicImage columnNumber;
+
+    private BasicImage columnImage;
+
+    /**
+     * biranje znakova
+     */
+
+    private Texture signTexture;
+
+    private Button incSignsButton;
+    private Button decSignsButton;
+
+    private BasicImage signNumber;
+
+    private BasicImage signImage;
+
+    /**
+     * tajmer
+     */
+
+    private Texture timerTexture;
+
+    private Button incTimerButton;
+    private Button decTimerButton;
+
+    private BasicImage timerNumber;
+
+    private BasicImage timerImage;
+
+    /**
+     * meni taster
+     */
+
+    private Texture menuUp;
+    private Texture menuDown;
+
+    private Button menuButton;
+
+
+    /**
+     * ostale teksture
+     */
+
 
     private Texture incUp;
     private Texture incDown;
@@ -35,35 +98,9 @@ public class SettingsState extends GameState {
     private Texture decUp;
     private Texture decDown;
 
-    private Texture menuUp;
-    private Texture menuDown;
+    private Texture [] numberTextures;
 
-    private Texture[] bgColors;
-
-    private Button incColorButton;
-    private Button decColorButton;
-
-    private Button incRowsButton;
-    private Button decRowsButton;
-
-    private Button incSignsButton;
-    private Button decSignsButton;
-
-    private Button menuButton;
-
-    private BasicImage rowNumber;
-    private BasicImage signNumber;
-
-    private BasicImage rowImage;
-    private BasicImage signImage;
-
-    private BasicImage colorImage;
-
-    private CheckButton musicButton;
-
-    private CheckButton repeatSignsButton;
-
-
+    private Texture [] timerNumberTextures;
 
 
     public SettingsState(DataBundle bundle, float scaleX, float scaleY, int width, int height) {
@@ -73,125 +110,102 @@ public class SettingsState extends GameState {
     @Override
     public void init() {
 
-        float x = width / 2;
 
-        float y = height - scaleY*OFFSET;
+        soundsButton = new CheckButton(soundsChecked, soundsUnchecked, bundle.isSounds(), width / 2, height - scaleY*250, scaleX, scaleY);
 
-        musicButton = new CheckButton(playMusicChecked, playMusicUnchecked, bundle.getVolume(), x, y, scaleX, scaleY);
 
-        y -= scaleY*OFFSET;
+        repeatSignsButton = new CheckButton(repeatSignsChecked, repeatSignsUnchecked, bundle.isRepeatSigns(), width / 2, height - scaleY*500, scaleX, scaleY);
 
-        repeatSignsButton = new CheckButton(repeatSignsChecked, repeatSignsUnchecked, bundle.getRepeatSigns(), x, y, scaleX, scaleY);
 
-        y -= scaleY*OFFSET;
 
-        x = width/2 - 200*scaleX;
+        columnImage = new BasicImage(columnTexture, width/2 - 200*scaleX, height - 750*scaleY, scaleX, scaleY);
 
-        rowImage = new BasicImage(columnTexture, x , y , scaleX, scaleY);
+        incColumnButton = new Button(incUp, incDown, width/2 + 325*scaleX, height - 750*scaleY, scaleX, scaleY);
 
-        x = width/2 + 325*scaleX;
+        decColumnButton = new Button(decUp, decDown, width/2 + 75*scaleX, height - 750*scaleY, scaleX, scaleY);
 
-        incRowsButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
+        columnNumber = new BasicImage(numberTextures[bundle.getAmountOfColumns()-4], width/2 + 200*scaleX, height - 750*scaleY, scaleX, scaleY);
 
-        x = width/2 + 75*scaleX;
 
-        decRowsButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
 
-        x = width/2 + 200*scaleX;
+        signImage = new BasicImage(signTexture, width/2 - 200*scaleX, height - 1000*scaleY, scaleX , scaleY);
 
-        rowNumber = new BasicImage(numberTextures[bundle.getAmountOfRows()-4], x, y, scaleX, scaleY);
+        incSignsButton = new Button(incUp, incDown, width/2 + 325*scaleX, height - 1000*scaleY, scaleX, scaleY);
 
-        y -= scaleY*OFFSET;
+        decSignsButton = new Button(decUp, decDown, width/2 + 75*scaleX, height - 1000*scaleY, scaleX, scaleY);
 
-        x = width/2 - 200*scaleX;
+        signNumber = new BasicImage(numberTextures[bundle.getAmountOfSigns()-4], width/2 + 200*scaleX, height - 1000*scaleY, scaleX, scaleY);
 
-        signImage = new BasicImage(signTexture, x, y, scaleX , scaleY);
 
-        x = width/2 + 325*scaleX;
 
-        incSignsButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
+        timerImage = new BasicImage(timerTexture, width/2 - 200*scaleX, height - 1250*scaleY, scaleX, scaleY);
 
-        x = width/2 + 75*scaleX;
+        incTimerButton = new Button(incUp, incDown, width/2 + 325*scaleX, height - 1250*scaleY, scaleX, scaleY);
 
-        decSignsButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
+        decTimerButton = new Button(decUp, decDown, width/2 + 75*scaleX, height - 1250*scaleY, scaleX, scaleY);
 
-        x = width/2 + 200*scaleX;
+        timerNumber = new BasicImage(timerNumberTextures[bundle.getTimerValue()], width/2 + 200*scaleX, height - 1250*scaleY, scaleX, scaleY);
 
-        signNumber = new BasicImage(numberTextures[bundle.getAmountOfSigns()-4], x, y, scaleX, scaleY);
 
-        x = width / 2;
 
-        y -= scaleY*OFFSET;
-
-        colorImage = new BasicImage(bgColors[bundle.getBgColor()],x,y,scaleX,scaleY);
-
-        x = width/2 - 171*scaleX;
-
-        decColorButton = new Button(decUp, decDown, x, y, scaleX, scaleY);
-
-        x = width/2 + 171*scaleX;
-
-        incColorButton = new Button(incUp, incDown, x, y, scaleX, scaleY);
-
-        x = width / 2;
-
-        y -= scaleY*OFFSET;
-
-        menuButton = new Button(menuUp, menuDown, x, y, scaleX, scaleY);
+        menuButton = new Button(menuUp, menuDown, width / 2, height - 1650*scaleY, scaleX, scaleY);
 
     }
 
     @Override
     public void render(SpriteBatch batch, float alpha) {
-        musicButton.draw(batch, alpha);
+        soundsButton.draw(batch, alpha);
+
         repeatSignsButton.draw(batch, alpha);
 
-        rowImage.draw(batch, alpha);
-        incRowsButton.draw(batch, alpha);
-        decRowsButton.draw(batch, alpha);
-        rowNumber.draw(batch,alpha);
+        columnImage.draw(batch, alpha);
+        incColumnButton.draw(batch, alpha);
+        decColumnButton.draw(batch, alpha);
+        columnNumber.draw(batch,alpha);
 
-        signImage.draw(batch,alpha);
-        incSignsButton.draw(batch,alpha);
-        decSignsButton.draw(batch,alpha);
-        signNumber.draw(batch,alpha);
+        signImage.draw(batch, alpha);
+        incSignsButton.draw(batch, alpha);
+        decSignsButton.draw(batch, alpha);
+        signNumber.draw(batch, alpha);
+
+        timerImage.draw(batch, alpha);
+        incTimerButton.draw(batch, alpha);
+        decTimerButton.draw(batch, alpha);
+        timerNumber.draw(batch, alpha);
 
         menuButton.draw(batch, alpha);
-
-        colorImage.draw(batch, alpha);
-        incColorButton.draw(batch, alpha);
-        decColorButton.draw(batch, alpha);
     }
 
     @Override
     public void touchDown(int x, int y) {
-        incRowsButton.handleDown(x,y);
-        decRowsButton.handleDown(x,y);
+        incColumnButton.handleDown(x,y);
+        decColumnButton.handleDown(x,y);
+
         incSignsButton.handleDown(x,y);
         decSignsButton.handleDown(x,y);
+
+        incTimerButton.handleDown(x,y);
+        decTimerButton.handleDown(x,y);
+
         menuButton.handleDown(x,y);
-        incColorButton.handleUp(x, y);
-        decColorButton.handleUp(x, y);
     }
 
-    @Override
-    public void update(float delta) {
-        super.update(delta);
-    }
 
     @Override
     public void touchUp(int x, int y) {
-        if(musicButton.handleUp(x,y)){
+        if(soundsButton.handleUp(x,y)){
             if(listener != null){
                 listener.playSound();
             }
-            bundle.setVolume(musicButton.isChecked());
-            if(musicButton.isChecked()){
+            bundle.setSounds(soundsButton.isChecked());
+
+            if(soundsButton.isChecked()){
                 listener.playMusic();
             }else{
                 listener.stopMusic();
             }
         }
+
         if(repeatSignsButton.handleUp(x,y)){
             if(listener != null){
                 listener.playSound();
@@ -200,29 +214,31 @@ public class SettingsState extends GameState {
         }
 
 
-        if(decRowsButton.handleUp(x,y)){
+        if(decColumnButton.handleUp(x,y)){
 
             if(listener != null){
                 listener.playSound();
             }
 
-            if(bundle.getAmountOfRows() != MIN_ROWS){
-                bundle.setAmountOfRows(bundle.getAmountOfRows()-1);
-                rowNumber.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
+            if(bundle.getAmountOfColumns() != MIN_COLUMNS){
+                bundle.setAmountOfColumns(bundle.getAmountOfColumns()-1);
+                columnNumber.setTexture(numberTextures[bundle.getAmountOfColumns()-4]);
             }
         }
 
-        if(incRowsButton.handleUp(x,y)){
+
+        if(incColumnButton.handleUp(x,y)){
 
             if(listener != null){
                 listener.playSound();
             }
 
-            if(bundle.getAmountOfRows() != MAX_ROWS){
-                bundle.setAmountOfRows(bundle.getAmountOfRows()+1);
-                rowNumber.setTexture(numberTextures[bundle.getAmountOfRows()-4]);
+            if(bundle.getAmountOfColumns() != MAX_COLUMNS){
+                bundle.setAmountOfColumns(bundle.getAmountOfColumns()+1);
+                columnNumber.setTexture(numberTextures[bundle.getAmountOfColumns()-4]);
             }
         }
+
 
         if(decSignsButton.handleUp(x,y)){
 
@@ -236,6 +252,7 @@ public class SettingsState extends GameState {
             }
         }
 
+
         if(incSignsButton.handleUp(x,y)){
 
             if(listener != null){
@@ -247,26 +264,30 @@ public class SettingsState extends GameState {
                 signNumber.setTexture(numberTextures[bundle.getAmountOfSigns()-4]);
             }
         }
-        if(incColorButton.handleUp(x, y)){
+
+
+        if(decTimerButton.handleUp(x, y)){
 
             if(listener != null){
                 listener.playSound();
             }
 
-            if(bundle.getBgColor() != MAX_BGCOLOR){
-                bundle.setBgColor(bundle.getBgColor()+1);
-                colorImage.setTexture(bgColors[bundle.getBgColor()]);
+            if(bundle.getTimerValue() != MIN_TIMER_VALUE){
+                bundle.setTimerValue(bundle.getTimerValue()-1);
+                timerNumber.setTexture(timerNumberTextures[bundle.getTimerValue()]);
             }
         }
-        if(decColorButton.handleUp(x, y)){
+
+
+        if(incTimerButton.handleUp(x, y)){
 
             if(listener != null){
                 listener.playSound();
             }
 
-            if(bundle.getBgColor() != MIN_BGCOLOR){
-                bundle.setBgColor(bundle.getBgColor()-1);
-                colorImage.setTexture(bgColors[bundle.getBgColor()]);
+            if(bundle.getTimerValue() != MAX_TIMER_VALUE){
+                bundle.setTimerValue(bundle.getTimerValue()+1);
+                timerNumber.setTexture(timerNumberTextures[bundle.getTimerValue()]);
             }
         }
 
@@ -294,8 +315,8 @@ public class SettingsState extends GameState {
 
     @Override
     public void initTextures() {
-        playMusicChecked = new Texture("music2.png");
-        playMusicUnchecked = new Texture("music1.png");
+        soundsChecked = new Texture("sounds2.png");
+        soundsUnchecked = new Texture("sounds1.png");
 
         repeatSignsChecked = new Texture("signs2.png");
         repeatSignsUnchecked = new Texture("signs1.png");
@@ -315,27 +336,31 @@ public class SettingsState extends GameState {
         menuDown = new Texture("menu2.png");
 
         signTexture = new Texture("signs.png");
+
         columnTexture = new Texture("columns.png");
 
-        bgColors = new Texture[5];
-        bgColors[0] = new Texture("red.png");
-        bgColors[1] = new Texture("blue.png");
-        bgColors[2] = new Texture("white.png");
-        bgColors[3] = new Texture("yellow.png");
-        bgColors[4] = new Texture("green.png");
+        timerTexture = new Texture("timer.png");
+
+        timerNumberTextures = new Texture[5];
+        timerNumberTextures[DataBundle.INFINITE] = new Texture("inf.png");
+        timerNumberTextures[DataBundle.T_30S] = new Texture("30s.png");
+        timerNumberTextures[DataBundle.T_1M] = new Texture("1m.png");
+        timerNumberTextures[DataBundle.T_2M] = new Texture("2m.png");
+        timerNumberTextures[DataBundle.T_5M] = new Texture("5m.png");
 
     }
 
     @Override
     protected void disposeTextures() {
-        playMusicChecked.dispose();
-        playMusicUnchecked.dispose();
+        soundsChecked.dispose();
+        soundsUnchecked.dispose();
 
         repeatSignsChecked.dispose();
         repeatSignsUnchecked.dispose();
 
         for(int i = 0; i < 5;i++){
             numberTextures[i].dispose();
+            timerNumberTextures[i].dispose();
         }
 
         incUp.dispose();
@@ -349,6 +374,8 @@ public class SettingsState extends GameState {
 
         signTexture.dispose();
         columnTexture.dispose();
+
+        timerTexture.dispose();
     }
 
 

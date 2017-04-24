@@ -5,7 +5,7 @@ public class DataBundle {
     /*
         Da li je ukljucen zvuk
      */
-    private boolean volume;
+    private boolean sounds;
 
     /*
         Da li se ponavljaju boje
@@ -17,7 +17,7 @@ public class DataBundle {
         koliko imamo redova koji se pogadjaju
      */
 
-    private int amountOfRows;
+    private int amountOfColumns;
 
     /*
         sa koliko boja/znakova pogadjamo
@@ -25,62 +25,72 @@ public class DataBundle {
 
     private int amountOfSigns;
 
-    /*
-        boja pozadine
+    /**
+    vrednost tajmera
+
+     0 -> beskonacno
+     1 -> 30s
+     2 -> 1m
+     3 -> 2m
+     4 -> 5m
      */
 
-    private int bgColor ;
+    public static final int INFINITE = 0;
+    public static final int T_30S = 1;
+    public static final int T_1M = 2;
+    public static final int T_2M = 3;
+    public static final int T_5M = 4;
+
+    private int timerValue;
 
 
-    public DataBundle(boolean volume,
-                      boolean repeatSigns,
-                      int amountOfRows,
-                      int amountOfSigns,
-                      int bgColor) {
-        this.volume = volume;
+
+
+    public DataBundle(boolean sounds, boolean repeatSigns, int amountOfColumns, int amountOfSigns, int timerValue) {
+        this.sounds = sounds;
         this.repeatSigns = repeatSigns;
-        this.amountOfRows = amountOfRows;
+        this.amountOfColumns = amountOfColumns;
         this.amountOfSigns = amountOfSigns;
-        this.bgColor = bgColor;
+        this.timerValue = timerValue;
     }
 
-    public boolean getVolume() {
-        return volume;
+    public boolean isSounds() {
+        return sounds;
     }
 
-    public boolean getRepeatSigns() {
+    public void setSounds(boolean sounds) {
+        this.sounds = sounds;
+    }
+
+    public boolean isRepeatSigns() {
         return repeatSigns;
-    }
-
-    public int getAmountOfRows() {
-        return amountOfRows;
-    }
-
-    public int getAmountOfSigns() {
-        return amountOfSigns;
-    }
-
-    public int getBgColor() {
-        return bgColor;
-    }
-
-    public void setVolume(boolean volume) {
-        this.volume = volume;
     }
 
     public void setRepeatSigns(boolean repeatSigns) {
         this.repeatSigns = repeatSigns;
     }
 
-    public void setAmountOfRows(int amountOfRows) {
-        this.amountOfRows = amountOfRows;
+    public int getAmountOfColumns() {
+        return amountOfColumns;
+    }
+
+    public void setAmountOfColumns(int amountOfColumns) {
+        this.amountOfColumns = amountOfColumns;
+    }
+
+    public int getAmountOfSigns() {
+        return amountOfSigns;
     }
 
     public void setAmountOfSigns(int amountOfSigns) {
         this.amountOfSigns = amountOfSigns;
     }
 
-    public void setBgColor(int bgColor) {
-        this.bgColor = bgColor;
+    public int getTimerValue() {
+        return timerValue;
+    }
+
+    public void setTimerValue(int timerValue) {
+        this.timerValue = timerValue;
     }
 }

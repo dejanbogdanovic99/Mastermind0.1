@@ -13,11 +13,11 @@ public class AndroidLauncher extends AndroidApplication {
 
 	private static final String FILE_NAME = "mastermind_settings";
 
-	private static final String VOLUME_PASS = "volume";
+	private static final String SOUNDS_PASS = "sounds";
 	private static final String REPEAT_SIGNS_PASS = "repeatSigns";
-	private static final String AMOUNT_OF_ROWS_PASS = "amountOfRows";
+	private static final String AMOUNT_OF_COLUMNS = "amountOfColumns";
 	private static final String AMOUNT_OF_SIGNS_PASS = "amountOfSigns";
-	private static final String BG_COLOR_PASS = "bgColor";
+	private static final String TIMER_VALUE_PASS = "timer";
 
 	private DataBundle bundle;
 
@@ -53,11 +53,11 @@ public class AndroidLauncher extends AndroidApplication {
 
 
 			bundle = new DataBundle(
-					file.getBoolean(VOLUME_PASS, true),
+					file.getBoolean(SOUNDS_PASS, true),
 					file.getBoolean(REPEAT_SIGNS_PASS, true),
-					file.getInt(AMOUNT_OF_ROWS_PASS, 4),
+					file.getInt(AMOUNT_OF_COLUMNS, 4),
 					file.getInt(AMOUNT_OF_SIGNS_PASS, 6),
-					file.getInt(BG_COLOR_PASS, 2)
+					file.getInt(TIMER_VALUE_PASS, 0)
 			);
 
 		}catch(Exception e){
@@ -66,7 +66,7 @@ public class AndroidLauncher extends AndroidApplication {
 					true,
 					4,
 					6,
-					2
+					0
 			);
 		}
 	}
@@ -82,11 +82,11 @@ public class AndroidLauncher extends AndroidApplication {
 
 			SharedPreferences.Editor editor = prefFile.edit();
 
-			editor.putBoolean(VOLUME_PASS, bundle.getVolume());
-			editor.putBoolean(REPEAT_SIGNS_PASS, bundle.getRepeatSigns());
-			editor.putInt(AMOUNT_OF_ROWS_PASS, bundle.getAmountOfRows());
+			editor.putBoolean(SOUNDS_PASS, bundle.isSounds());
+			editor.putBoolean(REPEAT_SIGNS_PASS, bundle.isRepeatSigns());
+			editor.putInt(AMOUNT_OF_COLUMNS, bundle.getAmountOfColumns());
 			editor.putInt(AMOUNT_OF_SIGNS_PASS, bundle.getAmountOfSigns());
-			editor.putInt(BG_COLOR_PASS, bundle.getBgColor());
+			editor.putInt(TIMER_VALUE_PASS, bundle.getTimerValue());
 
 			editor.apply();
 
