@@ -402,11 +402,19 @@ public class PlayState extends GameState {
                         menuButton.setPosition(300*scaleX, height - 950*scaleY);
                         newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
 
+                        if(timerEnabled){
+                            timerView.pause();
+                        }
+
                     }else if (numberOfAttempts == 10){
                         lost = true;
 
                         menuButton.setPosition(300*scaleX, height - 950*scaleY);
                         newButton.setPosition(width - 300*scaleX, height - 950*scaleY);
+
+                        if(timerEnabled){
+                            timerView.pause();
+                        }
                     }
 
                     CheckView checkView = new CheckView(fullHit, halfHit, scaleX, scaleY, bundle.getAmountOfColumns(), full.size(), half.size());
