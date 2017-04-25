@@ -683,11 +683,11 @@ public class PlayState extends GameState {
 
         questionVisible = false;
 
-        yesButton = new Button(yesUp, yesDown, 300*scaleX, height - 850*scaleY, scaleX, scaleY);
-        noButton = new Button(noUp, noDown, width - 300*scaleX, height - 850*scaleY, scaleX, scaleY);
+        yesButton = new Button(yesUp, yesDown, 300*scaleX, height - 950*scaleY, scaleX, scaleY);
+        noButton = new Button(noUp, noDown, width - 300*scaleX, height - 950*scaleY, scaleX, scaleY);
 
 
-        sureImage = new BasicImage(sureTexture, width /2, height - 700*scaleY, scaleX, scaleY);
+        sureImage = new BasicImage(sureTexture, width /2, height - 783*scaleY, scaleX, scaleY);
 
         futureCode = NO_CODE;
 

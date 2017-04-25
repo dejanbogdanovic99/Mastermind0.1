@@ -82,7 +82,8 @@ public class TimerView {
                 currentTime = maxTime;
             }
 
-            currentScaleY = ((maxTime - currentTime)/maxTime)*standardScaleY;
+          //  currentScaleY = ((maxTime - currentTime)/maxTime)*standardScaleY;
+            currentScaleY = (currentTime/maxTime)*standardScaleY;
 
             float currentY = upY - image.getHeight()*currentScaleY;
 
