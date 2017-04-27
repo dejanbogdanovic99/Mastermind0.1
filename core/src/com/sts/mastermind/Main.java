@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sts.mastermind.bundelPackage.DataBundle;
+import com.sts.mastermind.gamePackage.AboutState;
 import com.sts.mastermind.gamePackage.GameState;
 import com.sts.mastermind.gamePackage.MainMenuState;
 import com.sts.mastermind.gamePackage.PlayState;
@@ -26,6 +27,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int SETTINGS_STATE = 1;
 	public static final int PLAY_STATE = 2;
+	public static final int ABOUT_STATE = 3;
 
 
 	/**
@@ -35,7 +37,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 	private final int STANDARD_WIDTH = 1080;
 	private final int STANDARD_HEIGHT = 1920;
 
-	private final int AMOUNT_OF_STATES = 3;
+	private final int AMOUNT_OF_STATES = 4;
 
 	private final float R_BG =0.886f;
 	private final float G_BG =0.886f;
@@ -170,6 +172,19 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[SETTINGS_STATE].initTextures();
 
 		stateOfGame[SETTINGS_STATE].setChangeListener(this);
+
+
+		stateOfGame[ABOUT_STATE] = new AboutState(
+				bundle,
+				scaleX,
+				scaleY,
+				width,
+				height
+		);
+
+		stateOfGame[ABOUT_STATE].initTextures();
+
+		stateOfGame[ABOUT_STATE].setChangeListener(this);
 
 		ready = true;
 
