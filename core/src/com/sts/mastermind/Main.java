@@ -260,6 +260,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, ChangeSt
 		stateOfGame[MAIN_MENU_STATE].dispose();
 		stateOfGame[PLAY_STATE].dispose();
 		stateOfGame[SETTINGS_STATE].dispose();
+		stateOfGame[ABOUT_STATE].dispose();
 
 		batch.dispose();
 		bgMusic.stop();
