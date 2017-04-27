@@ -24,6 +24,9 @@ public class MainMenuState extends GameState {
     private Texture exitUp;
     private Texture exitDown;
 
+    private Texture creditsUp;
+    private Texture creditsDown;
+
     private Texture logoTexture;
 
     /*
@@ -35,6 +38,8 @@ public class MainMenuState extends GameState {
     private Button settings;
 
     private Button exit;
+
+    private Button credits;
 
     /*
         slika logoa
@@ -65,19 +70,25 @@ public class MainMenuState extends GameState {
 
         logoImage = new BasicImage(logoTexture, x,y, scaleX*0.7f, scaleY*0.7f);
 
-        y = height - scaleY*1070;
+        y = height - scaleY*970;
 
         // pozicija play tastera je na standardnom ekranu sredina i 920 od gore
         play = new Button(playUp, playDown, x, y, scaleX, scaleY);
 
-        y = height - scaleY*1320;
+        y = height - scaleY*1190;
 
         // pozicija settings tastera je na standardnom ekranu sredina i 1170 od gore
         settings = new Button(settingsUp, settingsDown, x, y, scaleX, scaleY);
 
-        y = height - scaleY*1570;
+        y = height - scaleY*1410;
 
-        // pozicija exit tastera je na standardnom ekranu sredina i 1420 od gore
+        //pozicija credits tastera ja na standardnom ekranu sredina i 1420 od gore
+
+        credits = new Button(creditsUp,creditsDown,x,y, scaleX, scaleY);
+
+        y = height - scaleY*1630;
+
+        // pozicija exit tastera je na standardnom ekranu sredina i 1670 od gore
         exit = new Button(exitUp, exitDown, x, y, scaleX, scaleY);
     }
 
@@ -86,6 +97,7 @@ public class MainMenuState extends GameState {
         logoImage.draw(batch, alpha);
         play.draw(batch, alpha);
         settings.draw(batch, alpha);
+        credits.draw(batch, alpha);
         exit.draw(batch, alpha);
     }
 
@@ -93,6 +105,7 @@ public class MainMenuState extends GameState {
     public void touchDown(int x, int y) {
         play.handleDown(x,y);
         settings.handleDown(x,y);
+        credits.handleDown(x,y);
         exit.handleDown(x,y);
     }
 
@@ -110,6 +123,12 @@ public class MainMenuState extends GameState {
                 listener.changeState(Main.SETTINGS_STATE);
             }
         }
+        if(credits.handleUp(x,y))
+            if(listener != null){
+                listener.playSound();
+                listener.changeState(Main.ABOUT_STATE);
+            }
+
         if(exit.handleUp(x,y)){
             Gdx.app.exit();
         }
@@ -135,6 +154,9 @@ public class MainMenuState extends GameState {
 
         exitUp = new Texture("exit1.png");
         exitDown = new Texture("exit2.png");
+
+        creditsUp = new Texture("credits1.png");
+        creditsDown = new Texture("credits2.png");
 
         logoTexture = new Texture("logo.png");
     }
