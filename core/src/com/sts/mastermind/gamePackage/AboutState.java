@@ -1,6 +1,7 @@
 package com.sts.mastermind.gamePackage;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sts.mastermind.Main;
 import com.sts.mastermind.bundelPackage.DataBundle;
 
 public class AboutState extends GameState {
@@ -34,7 +35,9 @@ public class AboutState extends GameState {
 
     @Override
     public void backPressed() {
-
+        if(listener != null) {
+            listener.changeState(Main.MAIN_MENU_STATE);
+        }
     }
 
     @Override

@@ -302,7 +302,6 @@ public class SettingsState extends GameState {
     @Override
     public void backPressed() {
         if(listener != null) {
-            listener.playSound();
             listener.changeState(Main.MAIN_MENU_STATE);
         }
     }
